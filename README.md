@@ -78,3 +78,18 @@ Email   : customer@mail.com
 Password: codeastro.com
 
 
+### Tạo liên kết tượng trưng để link từ 
+**Ý nghĩa**: Các gói laravel-filemanager và các gói khác sử dụng liên kết tượng trưng, tức là file thực tế lưu ở `storage\app\public` nhưng khi truy cập `public\storage` bạn vẫn có thể thấy và truy cập chúng.
+
+Tham khảo: 
+- Xem câu trả lời `Delete folder storage from public and run this command in cron job (one time)` trong câu hỏi sau: [Laravel storage link won't work on production](https://stackoverflow.com/questions/50730143/laravel-storage-link-wont-work-on-production)
+
+> Trên Mac
+```shell
+ln -s /home/public_html/storage/app/public /home/dev5/public_html/public/storage
+```
+
+> Trên Window
+```shell
+mklink /D "D:\Soft\laragon\www\aptech-laravel-ecommerce-demo\storage\app\public" "D:\Soft\laragon\www\aptech-laravel-ecommerce-demo\public\storage"
+```
