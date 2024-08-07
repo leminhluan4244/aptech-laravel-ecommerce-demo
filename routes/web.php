@@ -197,6 +197,6 @@ Route::middleware(UserMiddleware::class)->prefix('user')->group( function (){
 
 });
 
-Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+Route::middleware(Authenticate::class)->prefix('laravel-filemanager')->group( function (){
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
