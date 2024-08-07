@@ -10,20 +10,20 @@ class Post extends Model
 
 
     public function cat_info(){
-        return $this->hasOne('App\Models\PostCategory','id','post_cat_id');
+        return $this->hasOne(PostCategory::class,'id','post_cat_id');
     }
     public function tag_info(){
-        return $this->hasOne('App\Models\PostTag','id','post_tag_id');
+        return $this->hasOne(PostTag::class,'id','post_tag_id');
     }
 
     public function author_info(){
-        return $this->hasOne('App\User','id','added_by');
+        return $this->hasOne(User::class,'id','added_by');
     }
     public static function getAllPost(){
         return Post::with(['cat_info','author_info'])->orderBy('id','DESC')->paginate(10);
     }
     // public function get_comments(){
-    //     return $this->hasMany('App\Models\PostComment','post_id','id');
+    //     return $this->hasMany(PostComment::class,'post_id','id');
     // }
     public static function getPostBySlug($slug){
         return Post::with(['tag_info','author_info'])->where('slug',$slug)->where('status','active')->first();

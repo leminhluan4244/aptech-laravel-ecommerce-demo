@@ -1,5 +1,8 @@
 {
     "i18n-ally.localesPaths": [
         "resources/lang"
-    ]
+    ],
+    "php.suggest.basic": true,
+    "php.validate.enable": true,
+    "php.validate.executablePath": "D:/Soft/laragon/bin/php/php-8.3.10-Win32-vs16-x64/php.exe" // Windows
 }

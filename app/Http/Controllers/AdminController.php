@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Settings;
-use App\User;
+use App\Models\User;
 use App\Rules\MatchOldPassword;
 use Hash;
 use Carbon\Carbon;
 use Spatie\Activitylog\Models\Activity;
+use DB;
+
 class AdminController extends Controller
 {
     public function index(){
@@ -86,9 +88,9 @@ class AdminController extends Controller
             'new_password' => ['required'],
             'new_confirm_password' => ['same:new_password'],
         ]);
-   
+
         User::find(auth()->user()->id)->update(['password'=> Hash::make($request->new_password)]);
-   
+
         return redirect()->route('admin')->with('success','Password successfully changed');
     }
 

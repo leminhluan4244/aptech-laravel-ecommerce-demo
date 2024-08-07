@@ -12,7 +12,7 @@ class Brand extends Model
     //     return Product::where('brand_id',$id)->paginate(10);
     // }
     public function products(){
-        return $this->hasMany('App\Models\Product','brand_id','id')->where('status','active');
+        return $this->hasMany(Product::class, 'brand_id', 'id')->where('status', 'active');
     }
     public static function getProductByBrand($slug){
         // dd($slug);
