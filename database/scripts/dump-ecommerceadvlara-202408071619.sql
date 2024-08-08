@@ -688,7 +688,7 @@ CREATE TABLE `settings` (
 
 LOCK TABLES `settings` WRITE;
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
-INSERT INTO `settings` VALUES (1,'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. sed ut perspiciatis unde sunt in culpa qui officia deserunt mollit anim id est laborum. sed ut perspiciatis unde omnis iste natus error sit voluptatem Excepteu\r\n\r\n                            sunt in culpa qui officia deserunt mollit anim id est laborum. sed ut perspiciatis Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. sed ut perspi deserunt mollit anim id est laborum. sed ut perspi.','Welcome to Ecommerce Laravel Website, your premier destination for products. Discover a curated collection of product types designed to elevate your needs or lifestyle. Dive into a world of quality, style, innovation where every purchase guarantees satisfaction.','/storage/photos/1/logo.png','/storage/photos/1/blog3.jpg','115B/88 Test Address, Test','+1000000001','codeastro.com',NULL,'2023-11-22 17:36:59');
+INSERT INTO `settings` VALUES (1,'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. sed ut perspiciatis unde sunt in culpa qui officia deserunt mollit anim id est laborum. sed ut perspiciatis unde omnis iste natus error sit voluptatem Excepteu\r\n\r\n                            sunt in culpa qui officia deserunt mollit anim id est laborum. sed ut perspiciatis Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. sed ut perspi deserunt mollit anim id est laborum. sed ut perspi.','Welcome to Ecommerce Laravel Website, your premier destination for products. Discover a curated collection of product types designed to elevate your needs or lifestyle. Dive into a world of quality, style, innovation where every purchase guarantees satisfaction.','/storage/photos/1/logo.png','/storage/photos/1/blog3.jpg','115B/88 Test Address, Test','+1000000001','shop.com',NULL,'2023-11-22 17:36:59');
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -752,7 +752,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'CodeAstro','admin@mail.com',NULL,'$2y$12$U.dGUQy24lnv2I74b80RruaJ8Jk8eDMtKB7/Olqt3P09I0Wukkjfy','/storage/photos/1/admin-icn.png','admin',NULL,NULL,'active','wMHPV0lxnAMTG8QWFwxYnsS8L0QpGoQMBlw4aGk8BrhdwfjC3b2GK1HyTTHZ',NULL,'2024-08-07 01:44:43'),(2,'Customer A','customer@mail.com',NULL,'$2y$12$WJBRFuBDiv/e64rjOmorne/4XBfkgX70i4hVdY6uIAlJDQTSuWhFa',NULL,'user',NULL,NULL,'active',NULL,NULL,'2024-08-07 01:57:50');
+INSERT INTO `users` VALUES (1,'Admin','admin@mail.com',NULL,'$2a$12$tZ2AF/ebdbpOGrwZbYD0HOMysk2DkulXU.idnzFtWkL2.BcbzqIku','/storage/photos/1/admin-icn.png','admin',NULL,NULL,'active','wMHPV0lxnAMTG8QWFwxYnsS8L0QpGoQMBlw4aGk8BrhdwfjC3b2GK1HyTTHZ',NULL,'2024-08-07 01:44:43'),(2,'Customer A','customer@mail.com',NULL,'$2y$12$.fKvjx33qKh7NQRVC7c08OMsGRwAreEkF64skuWBSnS0pumw9c7Xq',NULL,'user',NULL,NULL,'active',NULL,NULL,'2024-08-07 01:57:50');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 

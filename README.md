@@ -26,15 +26,17 @@
 
 ```shell
 Email : admin@mail.com
-Password: codeastro.com
+Password: admin@mail.com
 ```
 
 **Customer Login Details** (Ấn vào chữ Login trên màn hình home)
 
 ```shell
 Email : customer@mail.com
-Password: codeastro.com
+Password: customer@mail.com
 ```
+
+> Bước 4 Đổi lại `php.validate.executablePath` trong file `.vscode/settings.json `cho phù hợp với máy của bạn
 
 > Lưu ý nếu gặp một số lỗi sau thì đây sẽ là cách xử lý dành cho bạn
 
