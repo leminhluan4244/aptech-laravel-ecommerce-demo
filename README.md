@@ -7,89 +7,78 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+### Hướng dẫn cài đặt
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+> Bước 1 Tạo cơ sở dữ liệu mẫu
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   Tạo mới database `ecommerceadvlara` trong mysql
+-   Chạy file sql mới nhất trong thư mục `/database/scripts` để tạo mới các table và data trong database vừa mới tạo
+-   Sau khi chạy xong hãy kiểm tra lại đã có data hay chưa
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+> Bước 2 Cấu hình lại file `.env`
 
-## Learning Laravel
+-   Thay đổi cấu hình kết nối database
+-   Thay đổi `APP_URL` bằng `APP_URL` trên máy tính của bạn, nếu không config chính xác chỗ này sẽ gây ra lỗi ở các link tài nguyên, đặc biệt là link image.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+> Bước 3 Khởi chạy, bạn vào link truy cập của mình như một ứng dụng PHP bình thường và sử dụng mật khẩu để truy cập
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+**Admin Login Details** (Sử dụng đường dẫn home thêm `/admin`)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```shell
+Email : admin@mail.com
+Password: codeastro.com
+```
 
-## Laravel Sponsors
+**Customer Login Details** (Ấn vào chữ Login trên màn hình home)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```shell
+Email : customer@mail.com
+Password: codeastro.com
+```
 
-### Premium Partners
+> Lưu ý nếu gặp một số lỗi sau thì đây sẽ là cách xử lý dành cho bạn
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+-   Lỗi `Failed to open stream: Permission denied` do không có quyền truy cập các file trong `storage` hoặc `public`.
 
-## Contributing
+```shell
+// Chạy lại các lệnh phân quyền và run lại config:
+chmod -R gu+w storage
+chmod -R guo+w storage
+php artisan cache:clear
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+// Nếu các lệnh trên chưa phân quyền hết thì hãy dùng tiếp các lệnh sau:
+php artisan cache:clear
+composer dump-autoload
+sudo chmod -R 777 storage/*
+sudo chmod -R 777 storage/logs/*
+sudo chmod -R 775 bootstrap/cache
+php artisan config:cache
 
-## Code of Conduct
+// Sau khi thực hiện có thể khởi động lại Apache
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Account login
 
-## Security Vulnerabilities
+### Tạo liên kết tượng trưng để link từ
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**Ý nghĩa**: Các gói laravel-filemanager và các gói khác sử dụng liên kết tượng trưng, tức là file thực tế lưu ở `storage\app\public` nhưng khi truy cập `public\storage` bạn vẫn có thể thấy và truy cập chúng.
+
+Tham khảo:
+
+-   Xem câu trả lời `Delete folder storage from public and run this command in cron job (one time)` trong câu hỏi sau: [Laravel storage link won't work on production](https://stackoverflow.com/questions/50730143/laravel-storage-link-wont-work-on-production)
+
+> Trên Mac
+
+```shell
+ln -s /Applications/XAMPP/xamppfiles/htdocs/aptech-laravel-ecommerce-demo/storage/app/public /Applications/XAMPP/xamppfiles/htdocs/aptech-laravel-ecommerce-demo/public/storage
+```
+
+> Trên Window
+
+```shell
+mklink /D "D:\Soft\laragon\www\aptech-laravel-ecommerce-demo\storage\app\public" "D:\Soft\laragon\www\aptech-laravel-ecommerce-demo\public\storage"
+```
 
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-
-### Account login
-
----Admin Login Details---
-
-Email   : admin@mail.com
-Password: codeastro.com
-
---Customer Login Details---
-Email   : customer@mail.com
-Password: codeastro.com
-
-
-### Tạo liên kết tượng trưng để link từ 
-**Ý nghĩa**: Các gói laravel-filemanager và các gói khác sử dụng liên kết tượng trưng, tức là file thực tế lưu ở `storage\app\public` nhưng khi truy cập `public\storage` bạn vẫn có thể thấy và truy cập chúng.
-
-Tham khảo: 
-- Xem câu trả lời `Delete folder storage from public and run this command in cron job (one time)` trong câu hỏi sau: [Laravel storage link won't work on production](https://stackoverflow.com/questions/50730143/laravel-storage-link-wont-work-on-production)
-
-> Trên Mac
-```shell
-ln -s /home/public_html/storage/app/public /home/dev5/public_html/public/storage
-```
-
-> Trên Window
-```shell
-mklink /D "D:\Soft\laragon\www\aptech-laravel-ecommerce-demo\storage\app\public" "D:\Soft\laragon\www\aptech-laravel-ecommerce-demo\public\storage"
-```
