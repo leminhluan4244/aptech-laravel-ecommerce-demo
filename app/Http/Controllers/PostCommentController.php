@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Post;
-use Notification;
+use App\Models\PostComment;
 use App\Models\User;
 use App\Notifications\StatusNotification;
-use App\Models\PostComment;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class PostCommentController extends Controller
 {
@@ -53,7 +53,7 @@ class PostCommentController extends Controller
         $details = [
             'title' => "New Comment created",
             'actionURL' => route('blog.detail', $post_info->slug),
-            'fas' => 'fas fa-comment'
+            'fas' => 'fas fa-comment',
         ];
         Notification::send($user, new StatusNotification($details));
         if ($status) {

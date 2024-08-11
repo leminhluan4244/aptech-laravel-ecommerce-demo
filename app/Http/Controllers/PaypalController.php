@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Srmklive\PayPal\Services\ExpressCheckout;
-use Illuminate\Http\Request;
-use NunoMaduro\Collision\Provider;
 use App\Models\Cart;
 use App\Models\Product;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Srmklive\PayPal\Services\ExpressCheckout;
 
 class PaypalController extends Controller
 {
@@ -23,8 +21,8 @@ class PaypalController extends Controller
             return [
                 'name' => $name,
                 'price' => $item['price'],
-                'desc'  => 'Thank you for using paypal',
-                'qty' => $item['quantity']
+                'desc' => 'Thank you for using paypal',
+                'qty' => $item['quantity'],
             ];
         }, $cart);
 

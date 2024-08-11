@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Shipping;
 use App\Models\User;
-use PDF;
-use Notification;
-use Helper;
-use Illuminate\Support\Str;
 use App\Notifications\StatusNotification;
+use Helper;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
+use PDF;
 
 class OrderController extends Controller
 {
@@ -52,7 +52,7 @@ class OrderController extends Controller
             'coupon' => 'nullable|numeric',
             'phone' => 'numeric|required',
             'post_code' => 'string|nullable',
-            'email' => 'string|required'
+            'email' => 'string|required',
         ]);
         // return $request->all();
 
@@ -136,12 +136,15 @@ class OrderController extends Controller
         $order->fill($order_data);
         $status = $order->save();
         if ($order)
-            // dd($order->id);
+        // dd($order->id);
+        {
             $users = User::where('role', 'admin')->first();
+        }
+
         $details = [
             'title' => 'New Order Received',
             'actionURL' => route('order.show', $order->id),
-            'fas' => 'fa-file-alt'
+            'fas' => 'fa-file-alt',
         ];
         Notification::send($users, new StatusNotification($details));
         if (request('payment_method') == 'paypal') {
@@ -193,7 +196,7 @@ class OrderController extends Controller
     {
         $order = Order::find($id);
         $this->validate($request, [
-            'status' => 'required|in:new,process,delivered,cancel'
+            'status' => 'required|in:new,process,delivered,cancel',
         ]);
         $data = $request->all();
         // return $request->status;
@@ -299,7 +302,7 @@ class OrderController extends Controller
         $data = [];
         for ($i = 1; $i <= 12; $i++) {
             $monthName = date('F', mktime(0, 0, 0, $i, 1));
-            $data[$monthName] = (!empty($result[$i])) ? number_format((float)($result[$i]), 2, '.', '') : 0.0;
+            $data[$monthName] = (!empty($result[$i])) ? number_format((float) ($result[$i]), 2, '.', '') : 0.0;
         }
         return $data;
     }
