@@ -11,13 +11,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias([
-            // unisharp
-            'Image' => Intervention\Image\Facades\Image::class,
-            'PDF' => Barryvdh\DomPDF\Facade::class,
-            'PayPal' => Srmklive\PayPal\Facades\PayPal::class,
-            'Socialite' => Laravel\Socialite\Facade\Socialite::class,
-        ]);
+        //
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
