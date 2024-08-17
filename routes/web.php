@@ -25,6 +25,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\UserMiddleware;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
@@ -39,7 +40,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes(['register'=>false]);
+
+Auth::routes(['register'=>false]); // Xem giải thích trong file README.md
 
 Route::get('user/login', [FrontendController::class, 'login'])->name('login.form');
 Route::post('user/login', [FrontendController::class, 'loginSubmit'])->name('login.submit');
