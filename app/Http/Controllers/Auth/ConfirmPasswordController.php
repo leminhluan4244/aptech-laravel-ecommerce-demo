@@ -17,7 +17,7 @@ class ConfirmPasswordController extends Controller
     | uses a simple trait to include the behavior. You're free to explore
     | this trait and override any functions that require customization.
     |
-    */
+     */
 
     use ConfirmsPasswords;
 
@@ -29,12 +29,12 @@ class ConfirmPasswordController extends Controller
     protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
-     * Get the middleware that should be assigned to the controller.
+     * Create a new controller instance.
+     *
+     * @return void
      */
-    public static function middleware(): array
+    public function __construct()
     {
-        return [
-            'auth',
-        ];
+        $this->middleware('auth');
     }
 }
