@@ -70,7 +70,9 @@
     <script src="{{ asset('vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
     <script src="{{ asset('backend/summernote/summernote.min.js') }}"></script>
     <script>
-        $('#lfm').filemanager('image');
+        $('#lfm').filemanager('image', {
+            prefix: "{{ asset('/laravel-filemanager') }}"
+        });
 
         $(document).ready(function() {
             $('#description').summernote({

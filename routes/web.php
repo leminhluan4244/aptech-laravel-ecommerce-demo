@@ -48,7 +48,7 @@ Route::get('user/logout', [FrontendController::class, 'logout'])->name('user.log
 Route::get('user/register', [FrontendController::class, 'register'])->name('register.form');
 Route::post('user/register', [FrontendController::class, 'registerSubmit'])->name('register.submit');
 // Reset password
-Route::post('password-reset', [FrontendController::class, 'showResetForm'])->name('password.reset');
+Route::post('password-reset', [FrontendController::class, 'showResetForm'])->name('password.reset.custom');
 // Socialite
 Route::get('login/{provider}/', [LoginController::class, 'redirect'])->name('login.redirect');
 Route::get('login/{provider}/callback/', [LoginController::class, 'Callback'])->name('login.callback');
@@ -104,7 +104,7 @@ Route::post('/subscribe', [FrontendController::class, 'subscribe'])->name('subsc
 
 // Product Review
 Route::resource('/review', ProductReviewController::class);
-Route::post('product/{slug}/review', [ProductReviewController::class, 'store'])->name('review.store');
+Route::post('product/{slug}/review', [ProductReviewController::class, 'store'])->name('product.review.store');
 
 // Post Comment
 Route::post('post/{slug}/comment', [PostCommentController::class, 'store'])->name('post-comment.store');
@@ -163,8 +163,8 @@ Route::middleware([Authenticate::class, AdminMiddleware::class])->prefix('admin'
     Route::get('/notifications', [NotificationController::class, 'index'])->name('all.notification');
     Route::delete('/notification/{id}', [NotificationController::class, 'delete'])->name('notification.delete');
     // Password Change
-    Route::get('change-password', [AdminController::class, 'changePassword'])->name('change.password.form');
-    Route::post('change-password', [AdminController::class, 'changPasswordStore'])->name('change.password');
+    Route::get('change-password', [AdminController::class, 'changePassword'])->name('admin.change.password.form');
+    Route::post('change-password', [AdminController::class, 'changPasswordStore'])->name('admin.change.password.submit');
 });
 
 // User section start
@@ -191,7 +191,7 @@ Route::middleware(UserMiddleware::class)->prefix('user')->group(function () {
 
     // Password Change
     Route::get('change-password', [HomeController::class, 'changePassword'])->name('user.change.password.form');
-    Route::post('change-password', [HomeController::class, 'changPasswordStore'])->name('change.password');
+    Route::post('change-password', [HomeController::class, 'changPasswordStore'])->name('user.change.password.submit');
 
 });
 

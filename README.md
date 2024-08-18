@@ -81,6 +81,17 @@ ln -s /Applications/XAMPP/xamppfiles/htdocs/aptech-laravel-ecommerce-demo/storag
 mklink /D "D:\Soft\laragon\www\aptech-laravel-ecommerce-demo\storage\app\public" "D:\Soft\laragon\www\aptech-laravel-ecommerce-demo\public\storage"
 ```
 
+Sau khi tạo liên kết, bạn cần setting lại APP_URL trong env trở đến URL public của dự án
+
+Tiếp theo hãy thực hiện các lệnh:
+
+```shell
+    php artisan vendor:publish --tag=lfm_config
+    php artisan vendor:publish --tag=lfm_public
+    php artisan route:clear
+    php artisan config:clear
+```
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
