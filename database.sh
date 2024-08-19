@@ -13,16 +13,3 @@ mysql -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USERNAME" -p"$DB_PASSWORD" -e "CREATE 
 
 # Chạy lệnh MySQL để thực hiện script
 mysql -h "$DB_HOST" -P "$DB_PORT" -u "$DB_USERNAME" -p"$DB_PASSWORD" "$DB_NAME" < database/scripts/runner.sql
-
-# Hành động 2: Tạo symbolic link hoặc junction
-# Lấy đường dẫn gốc của folder chứa script
-SCRIPT_DIR=$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)
-
-# Kiểm tra hệ điều hành
-if [[ "$(uname)" == "Darwin" ]]; then
-  # Mac OS
-  ln -s "$SCRIPT_DIR/storage/app/public" "$SCRIPT_DIR/public/storage"
-else
-  # Windows
-  cmd /c mklink /D "$SCRIPT_DIR\storage\app\public" "$SCRIPT_DIR\public\storage"
-fi

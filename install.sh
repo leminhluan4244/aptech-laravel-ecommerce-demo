@@ -29,6 +29,3 @@ chmod -R 777 storage/logs/*
 
 # Chỉnh sửa quyền truy cập cho thư mục bootstrap/cache
 chmod -R 775 bootstrap/cache
-
-# Cache configuration
-php artisan config:cache
