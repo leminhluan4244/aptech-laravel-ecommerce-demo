@@ -86,7 +86,7 @@ Ví dụ: `"php.validate.executablePath": "D:/Soft/xampp/php/php.exe", `
 **Bước 6: Cấu hình cho các extension hỗ trợ**
 Theo dõi: [Link](https://ourcodeworld.com/articles/read/349/how-to-install-and-enable-the-imagick-extension-in-xampp-for-windows)
 
-Nếu bạn dùng window thì hãy tải các bản cài đặt dll và thêm config cho file `php.ini` như sau:
+Nếu bạn dùng window thì hãy tải các bản cài đặt dll và thêm config cho file `php.ini` như sau (nhớ sửa lại được dẫn xampp của bạn):
 
 ```ini
 ;;;;;;;;;;;;;;;;;;;;;;
@@ -95,7 +95,7 @@ Nếu bạn dùng window thì hãy tải các bản cài đặt dll và thêm co
 ; Add the following line where the other extensions are loaded
 imagick.skip_version_check=true
 extension=php_imagick.dll
-upload_tmp_dir = c:\laragon\tmpsD:\Soft\xampp\temp
+upload_tmp_dir = C:\xampp\temp
 ```
 
 **Bước 7: Cấu hình cho package**
