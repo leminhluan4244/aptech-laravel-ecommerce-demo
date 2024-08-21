@@ -14,6 +14,13 @@ fi
 # Cài đặt các dependency
 composer i
 
+# Xóa file composer.lock nếu có
+if [ -f composer.lock ]; then
+    rm package-lock.json
+fi
+
+npm i && npm run build
+
 # Generate application key
 php artisan key:generate
 
@@ -29,3 +36,5 @@ chmod -R 777 storage/logs/*
 
 # Chỉnh sửa quyền truy cập cho thư mục bootstrap/cache
 chmod -R 775 bootstrap/cache
+
+

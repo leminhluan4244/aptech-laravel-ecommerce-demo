@@ -39,6 +39,21 @@ Trong quá trình chạy có thể của sổ lệnh sẽ hỏi mật khẩu, b�
 
 Database sẽ tự động được thêm và sau khi hoàn tất lệnh.
 
+Nếu bạn gặp lỗi `mysql command not found` bạn có thể tạo database bằng tay và import toàn bộ databasee trong thư file: `database\scripts\runner.sql`
+
+Hoặc bạn có thể fix lỗi `mysql command not found` bằng cách thêm path mysql vào danh sách path:
+
+Cách làm: Tìm ứng dụng tên như ảnh sau:
+![alt text](./other/image1.png)
+
+Chọn Advanced > Environment Variables
+![alt text](./other/image2.png)
+
+Thêm path mysql
+![alt text](./other/image3.png)
+
+Tắt git bash hoặc cmd đang mở và thử chạy lại `sh database.sh`
+
 **Bước 3: Cấu hình lại file `.env`**
 
 -   Thay đổi cấu hình kết nối database
@@ -53,8 +68,8 @@ Bạn vào link truy cập của mình như một ứng dụng PHP bình thườ
 **Admin Login Details** (Sử dụng đường dẫn `...public/login`)
 
 ```shell
-Email : admin@mail.com
-Password: admin@mail.com
+Email : admin@gmail.com
+Password: admin@gmail.com
 ```
 
 **Customer Login Details** (Sử dụng đường dẫn `...public/user/login`)
