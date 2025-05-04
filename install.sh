@@ -19,6 +19,8 @@ if [ -f composer.lock ]; then
     rm package-lock.json
 fi
 
+chmod -R 777 public/build
+
 npm i && npm run build
 
 # Generate application key

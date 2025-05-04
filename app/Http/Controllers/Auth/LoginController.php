@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -52,30 +51,36 @@ class LoginController extends Controller implements HasMiddleware
 
     public function credentials(Request $request)
     {
-        return ['email' => $request->email, 'password' => $request->password, 'status' => 'active', 'role' => 'admin'];
+        return [
+            'email'    => $request->email,
+            'password' => $request->password,
+            'status'   => 'active',
+            'role'     => 'admin',
+        ];
     }
 
     public function redirect($provider)
-    {
+    {dd('haha');
+
         // dd($provider);
-        return Socialite::driver($provider)->redirect();
-    }
+        return Socialite::driver($provider)->redirect();}
 
     public function Callback($provider)
     {
-        $userSocial =   Socialite::driver($provider)->stateless()->user();
-        $users      =   User::where(['email' => $userSocial->getEmail()])->first();
+        dd('haha');
+        $userSocial = Socialite::driver($provider)->stateless()->user();
+        $users      = User::where(['email' => $userSocial->getEmail()])->first();
         // dd($users);
         if ($users) {
             Auth::login($users);
             return redirect('/')->with('success', 'You are login from ' . $provider);
         } else {
             $user = User::create([
-                'name'          => $userSocial->getName(),
-                'email'         => $userSocial->getEmail(),
-                'image'         => $userSocial->getAvatar(),
-                'provider_id'   => $userSocial->getId(),
-                'provider'      => $provider,
+                'name'        => $userSocial->getName(),
+                'email'       => $userSocial->getEmail(),
+                'image'       => $userSocial->getAvatar(),
+                'provider_id' => $userSocial->getId(),
+                'provider'    => $provider,
             ]);
             return redirect()->route('home');
         }
