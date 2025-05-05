@@ -60,14 +60,13 @@ class LoginController extends Controller implements HasMiddleware
     }
 
     public function redirect($provider)
-    {dd('haha');
-
+    {
         // dd($provider);
-        return Socialite::driver($provider)->redirect();}
+        return Socialite::driver($provider)->redirect();
+    }
 
     public function Callback($provider)
     {
-        dd('haha');
         $userSocial = Socialite::driver($provider)->stateless()->user();
         $users      = User::where(['email' => $userSocial->getEmail()])->first();
         // dd($users);
