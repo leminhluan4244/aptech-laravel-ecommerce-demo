@@ -10,7 +10,8 @@ use App\Models\Wishlist;
 use App\Models\Shipping;
 use App\Models\Cart;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-// use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
+
 class Helper
 {
     public static function messageList()

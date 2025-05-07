@@ -3,15 +3,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
-class LoginController extends Controller implements HasMiddleware
+class LoginController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -31,23 +28,18 @@ class LoginController extends Controller implements HasMiddleware
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
-    /**
-     * Get the middleware that should be assigned to the controller.
-     */
-    public static function middleware(): array
-    {
-        return [
-            new Middleware('guest', except: ['logout']),
-        ];
-    }
+    protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+        $this->middleware('auth')->only('logout');
+    }
 
     public function credentials(Request $request)
     {
@@ -61,7 +53,6 @@ class LoginController extends Controller implements HasMiddleware
 
     public function redirect($provider)
     {
-        // dd($provider);
         return Socialite::driver($provider)->redirect();
     }
 
@@ -69,12 +60,12 @@ class LoginController extends Controller implements HasMiddleware
     {
         $userSocial = Socialite::driver($provider)->stateless()->user();
         $users      = User::where(['email' => $userSocial->getEmail()])->first();
-        // dd($users);
+        dd($users);
         if ($users) {
             Auth::login($users);
             return redirect('/')->with('success', 'You are login from ' . $provider);
         } else {
-            $user = User::create([
+            User::create([
                 'name'        => $userSocial->getName(),
                 'email'       => $userSocial->getEmail(),
                 'image'       => $userSocial->getAvatar(),
@@ -83,5 +74,13 @@ class LoginController extends Controller implements HasMiddleware
             ]);
             return redirect()->route('home');
         }
+    }
+
+    protected function attemptLogin(Request $request)
+    {
+        $result = $this->guard()->attempt(
+            $this->credentials($request), $request->boolean('remember')
+        );
+        return $result;
     }
 }
