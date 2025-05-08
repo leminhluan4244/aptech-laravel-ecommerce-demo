@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Wishlist;
+use Illuminate\Http\Request;
 
 class WishlistController extends Controller
 {
     protected $product = null;
+
     public function __construct(Product $product)
     {
         $this->product = $product;
@@ -20,12 +20,14 @@ class WishlistController extends Controller
         // dd($request->all());
         if (empty($request->slug)) {
             request()->session()->flash('error', 'Invalid Products');
+
             return back();
         }
         $product = Product::where('slug', $request->slug)->first();
         // return $product;
         if (empty($product)) {
             request()->session()->flash('error', 'Invalid Products');
+
             return back();
         }
 
@@ -33,6 +35,7 @@ class WishlistController extends Controller
         // return $already_wishlist;
         if ($already_wishlist) {
             request()->session()->flash('error', 'You already placed in wishlist');
+
             return back();
         } else {
 
@@ -42,10 +45,13 @@ class WishlistController extends Controller
             $wishlist->price = ($product->price - ($product->price * $product->discount) / 100);
             $wishlist->quantity = 1;
             $wishlist->amount = $wishlist->price * $wishlist->quantity;
-            if ($wishlist->product->stock < $wishlist->quantity || $wishlist->product->stock <= 0) return back()->with('error', 'Stock not sufficient!.');
+            if ($wishlist->product->stock < $wishlist->quantity || $wishlist->product->stock <= 0) {
+                return back()->with('error', 'Stock not sufficient!.');
+            }
             $wishlist->save();
         }
         request()->session()->flash('success', 'Product added to wishlist');
+
         return back();
     }
 
@@ -55,9 +61,11 @@ class WishlistController extends Controller
         if ($wishlist) {
             $wishlist->delete();
             request()->session()->flash('success', 'Wishlist removed');
+
             return back();
         }
         request()->session()->flash('error', 'Error please try again');
+
         return back();
     }
 }

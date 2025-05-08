@@ -16,8 +16,9 @@ class PaypalController extends Controller
         $data = [];
 
         // return $cart;
-        $data['items'] = array_map(function ($item) use ($cart) {
+        $data['items'] = array_map(function ($item) {
             $name = Product::where('id', $item['product_id'])->pluck('title');
+
             return [
                 'name' => $name,
                 'price' => $item['price'],
@@ -26,7 +27,7 @@ class PaypalController extends Controller
             ];
         }, $cart);
 
-        $data['invoice_id'] = 'ORD-' . strtoupper(uniqid());
+        $data['invoice_id'] = 'ORD-'.strtoupper(uniqid());
         $data['invoice_description'] = "Order #{$data['invoice_id']} Invoice";
         $data['return_url'] = route('payment.success');
         $data['cancel_url'] = route('payment.cancel');
@@ -75,10 +76,12 @@ class PaypalController extends Controller
             request()->session()->flash('success', 'You have successfully paid through Paypal! Thank You');
             session()->forget('cart');
             session()->forget('coupon');
+
             return redirect()->route('home');
         }
 
         request()->session()->flash('error', 'Something went wrong please try again!!!');
+
         return redirect()->back();
     }
 }

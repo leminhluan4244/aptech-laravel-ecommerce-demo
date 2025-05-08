@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -44,10 +45,10 @@ class LoginController extends Controller
     public function credentials(Request $request)
     {
         return [
-            'email'    => $request->email,
+            'email' => $request->email,
             'password' => $request->password,
-            'status'   => 'active',
-            'role'     => 'admin',
+            'status' => 'active',
+            'role' => 'admin',
         ];
     }
 
@@ -59,19 +60,21 @@ class LoginController extends Controller
     public function Callback($provider)
     {
         $userSocial = Socialite::driver($provider)->stateless()->user();
-        $users      = User::where(['email' => $userSocial->getEmail()])->first();
+        $users = User::where(['email' => $userSocial->getEmail()])->first();
         dd($users);
         if ($users) {
             Auth::login($users);
-            return redirect('/')->with('success', 'You are login from ' . $provider);
+
+            return redirect('/')->with('success', 'You are login from '.$provider);
         } else {
             User::create([
-                'name'        => $userSocial->getName(),
-                'email'       => $userSocial->getEmail(),
-                'image'       => $userSocial->getAvatar(),
+                'name' => $userSocial->getName(),
+                'email' => $userSocial->getEmail(),
+                'image' => $userSocial->getAvatar(),
                 'provider_id' => $userSocial->getId(),
-                'provider'    => $provider,
+                'provider' => $provider,
             ]);
+
             return redirect()->route('home');
         }
     }
@@ -81,6 +84,7 @@ class LoginController extends Controller
         $result = $this->guard()->attempt(
             $this->credentials($request), $request->boolean('remember')
         );
+
         return $result;
     }
 }

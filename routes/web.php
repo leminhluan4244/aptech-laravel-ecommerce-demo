@@ -41,7 +41,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes(['register' => false]);
 
-Route::get('user/login', [FrontendController::class, 'login'])->name('login.form'); #laravel 12
+Route::get('user/login', [FrontendController::class, 'login'])->name('login.form'); // laravel 12
 Route::post('user/login', [FrontendController::class, 'loginSubmit'])->name('login.submit');
 Route::get('user/logout', [FrontendController::class, 'logout'])->name('user.logout');
 
@@ -182,8 +182,8 @@ Route::middleware(UserMiddleware::class)->prefix('user')->group(function () {
     Route::get('/profile', [HomeController::class, 'profile'])->name('user-profile');
     Route::post('/profile/{id}', [HomeController::class, 'profileUpdate'])->name('user-profile-update');
     //  Order
-    Route::get('/order', [HomeController::class, "orderIndex"])->name('user.order.index');
-    Route::get('/order/show/{id}', [HomeController::class, "orderShow"])->name('user.order.show');
+    Route::get('/order', [HomeController::class, 'orderIndex'])->name('user.order.index');
+    Route::get('/order/show/{id}', [HomeController::class, 'orderShow'])->name('user.order.show');
     Route::delete('/order/delete/{id}', [HomeController::class, 'userOrderDelete'])->name('user.order.delete');
     // Product Review
     Route::get('/user-review', [HomeController::class, 'productReviewIndex'])->name('user.productreview.index');

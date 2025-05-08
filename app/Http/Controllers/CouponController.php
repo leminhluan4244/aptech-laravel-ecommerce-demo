@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
@@ -15,6 +16,7 @@ class CouponController extends Controller
     public function index()
     {
         $coupon = Coupon::orderBy('id', 'DESC')->paginate('10');
+
         return view('backend.coupon.index')->with('coupons', $coupon);
     }
 
@@ -31,24 +33,24 @@ class CouponController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $this->validate($request, [
-            'code'   => 'string|required',
-            'type'   => 'required|in:fixed,percent',
-            'value'  => 'required|numeric',
+            'code' => 'string|required',
+            'type' => 'required|in:fixed,percent',
+            'value' => 'required|numeric',
             'status' => 'required|in:active,inactive',
         ]);
-        $data   = $request->all();
+        $data = $request->all();
         $status = Coupon::create($data);
         if ($status) {
             request()->session()->flash('success', 'Coupon added');
         } else {
             request()->session()->flash('error', 'Please try again!!');
         }
+
         return redirect()->route('coupon.index');
     }
 
@@ -58,9 +60,7 @@ class CouponController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-    }
+    public function show($id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -81,7 +81,6 @@ class CouponController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -89,9 +88,9 @@ class CouponController extends Controller
     {
         $coupon = Coupon::find($id);
         $this->validate($request, [
-            'code'   => 'string|required',
-            'type'   => 'required|in:fixed,percent',
-            'value'  => 'required|numeric',
+            'code' => 'string|required',
+            'type' => 'required|in:fixed,percent',
+            'value' => 'required|numeric',
             'status' => 'required|in:active,inactive',
         ]);
         $data = $request->all();
@@ -102,6 +101,7 @@ class CouponController extends Controller
         } else {
             request()->session()->flash('error', 'Please try again!!');
         }
+
         return redirect()->route('coupon.index');
 
     }
@@ -122,9 +122,11 @@ class CouponController extends Controller
             } else {
                 request()->session()->flash('error', 'Error, Please try again');
             }
+
             return redirect()->route('coupon.index');
         } else {
             request()->session()->flash('error', 'Coupon not found');
+
             return redirect()->back();
         }
     }
@@ -135,17 +137,19 @@ class CouponController extends Controller
         // dd($coupon);
         if (! $coupon) {
             request()->session()->flash('error', 'Invalid coupon code, Please try again');
+
             return back();
         }
         if ($coupon) {
             $total_price = Cart::where('user_id', auth()->user()->id)->where('order_id', null)->sum('price');
             // dd($total_price);
             session()->put('coupon', [
-                'id'    => $coupon->id,
-                'code'  => $coupon->code,
+                'id' => $coupon->id,
+                'code' => $coupon->code,
                 'value' => $coupon->discount($total_price),
             ]);
             request()->session()->flash('success', 'Coupon successfully applied');
+
             return redirect()->back();
         }
     }

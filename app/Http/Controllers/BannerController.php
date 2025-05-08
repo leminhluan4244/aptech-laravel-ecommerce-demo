@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Banner;
@@ -15,6 +16,7 @@ class BannerController extends Controller
     public function index()
     {
         $banner = Banner::orderBy('id', 'DESC')->paginate(10);
+
         return view('backend.banner.index')->with('banners', $banner);
     }
 
@@ -31,22 +33,21 @@ class BannerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title'       => 'string|required|max:50',
+            'title' => 'string|required|max:50',
             'description' => 'string|nullable',
-            'photo'       => 'string|required',
-            'status'      => 'required|in:active,inactive',
+            'photo' => 'string|required',
+            'status' => 'required|in:active,inactive',
         ]);
-        $data  = $request->all();
-        $slug  = Str::slug($request->title);
+        $data = $request->all();
+        $slug = Str::slug($request->title);
         $count = Banner::where('slug', $slug)->count();
         if ($count > 0) {
-            $slug = $slug . '-' . date('ymdis') . '-' . rand(0, 999);
+            $slug = $slug.'-'.date('ymdis').'-'.rand(0, 999);
         }
         $data['slug'] = $slug;
         // return $slug;
@@ -56,6 +57,7 @@ class BannerController extends Controller
         } else {
             request()->session()->flash('error', 'Error occurred while adding banner');
         }
+
         return redirect()->route('banner.index');
     }
 
@@ -79,13 +81,13 @@ class BannerController extends Controller
     public function edit($id)
     {
         $banner = Banner::findOrFail($id);
+
         return view('backend.banner.edit')->with('banner', $banner);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -93,10 +95,10 @@ class BannerController extends Controller
     {
         $banner = Banner::findOrFail($id);
         $this->validate($request, [
-            'title'       => 'string|required|max:50',
+            'title' => 'string|required|max:50',
             'description' => 'string|nullable',
-            'photo'       => 'string|required',
-            'status'      => 'required|in:active,inactive',
+            'photo' => 'string|required',
+            'status' => 'required|in:active,inactive',
         ]);
         $data = $request->all();
         // $slug=Str::slug($request->title);
@@ -112,6 +114,7 @@ class BannerController extends Controller
         } else {
             request()->session()->flash('error', 'Error occurred while updating banner');
         }
+
         return redirect()->route('banner.index');
     }
 
@@ -130,6 +133,7 @@ class BannerController extends Controller
         } else {
             request()->session()->flash('error', 'Error occurred while deleting banner');
         }
+
         return redirect()->route('banner.index');
     }
 }

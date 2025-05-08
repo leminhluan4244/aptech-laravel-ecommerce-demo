@@ -16,6 +16,7 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::orderBy('id', 'ASC')->paginate(10);
+
         return view('backend.users.index')->with('users', $users);
     }
 
@@ -32,7 +33,6 @@ class UsersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -59,6 +59,7 @@ class UsersController extends Controller
         } else {
             request()->session()->flash('error', 'Error occurred while adding user');
         }
+
         return redirect()->route('users.index');
     }
 
@@ -82,13 +83,13 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
+
         return view('backend.users.edit')->with('user', $user);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -115,6 +116,7 @@ class UsersController extends Controller
         } else {
             request()->session()->flash('error', 'Error occured while updating');
         }
+
         return redirect()->route('users.index');
     }
 
@@ -133,6 +135,7 @@ class UsersController extends Controller
         } else {
             request()->session()->flash('error', 'There is an error while deleting users');
         }
+
         return redirect()->route('users.index');
     }
 }

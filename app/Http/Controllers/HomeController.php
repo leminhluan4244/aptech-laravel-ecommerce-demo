@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Order;
@@ -26,7 +27,6 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-
     public function index()
     {
         return view('user.index');
@@ -35,20 +35,22 @@ class HomeController extends Controller
     public function profile()
     {
         $profile = Auth()->user();
+
         // return $profile;
         return view('user.users.profile')->with('profile', $profile);
     }
 
     public function profileUpdate(Request $request, $id)
     {
-        $user   = User::findOrFail($id);
-        $data   = $request->all();
+        $user = User::findOrFail($id);
+        $data = $request->all();
         $status = $user->fill($data)->save();
         if ($status) {
             request()->session()->flash('success', 'Successfully updated your profile');
         } else {
             request()->session()->flash('error', 'Please try again!');
         }
+
         return redirect()->back();
     }
 
@@ -56,13 +58,15 @@ class HomeController extends Controller
     public function orderIndex()
     {
         $orders = Order::orderBy('id', 'DESC')->where('user_id', auth()->user()->id)->paginate(10);
+
         return view('user.order.index')->with('orders', $orders);
     }
+
     public function userOrderDelete($id)
     {
         $order = Order::find($id);
         if ($order) {
-            if ($order->status == "process" || $order->status == 'delivered' || $order->status == 'cancel') {
+            if ($order->status == 'process' || $order->status == 'delivered' || $order->status == 'cancel') {
                 return redirect()->back()->with('error', 'You can not delete this order now');
             } else {
                 $status = $order->delete();
@@ -71,10 +75,12 @@ class HomeController extends Controller
                 } else {
                     request()->session()->flash('error', 'Order can not deleted');
                 }
+
                 return redirect()->route('user.order.index');
             }
         } else {
             request()->session()->flash('error', 'Order can not found');
+
             return redirect()->back();
         }
     }
@@ -82,19 +88,23 @@ class HomeController extends Controller
     public function orderShow($id)
     {
         $order = Order::find($id);
+
         // return $order;
         return view('user.order.show')->with('order', $order);
     }
+
     // Product Review
     public function productReviewIndex()
     {
         $reviews = ProductReview::getAllUserReview();
+
         return view('user.review.index')->with('reviews', $reviews);
     }
 
     public function productReviewEdit($id)
     {
         $review = ProductReview::find($id);
+
         // return $review;
         return view('user.review.edit')->with('review', $review);
     }
@@ -102,7 +112,6 @@ class HomeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -110,7 +119,7 @@ class HomeController extends Controller
     {
         $review = ProductReview::find($id);
         if ($review) {
-            $data   = $request->all();
+            $data = $request->all();
             $status = $review->fill($data)->update();
             if ($status) {
                 request()->session()->flash('success', 'Review updated');
@@ -139,14 +148,17 @@ class HomeController extends Controller
         } else {
             request()->session()->flash('error', 'Something went wrong! Try again');
         }
+
         return redirect()->route('user.productreview.index');
     }
 
     public function userComment()
     {
         $comments = PostComment::getAllUserComments();
+
         return view('user.comment.index')->with('comments', $comments);
     }
+
     public function userCommentDelete($id)
     {
         $comment = PostComment::find($id);
@@ -157,12 +169,15 @@ class HomeController extends Controller
             } else {
                 request()->session()->flash('error', 'Error occurred please try again');
             }
+
             return back();
         } else {
             request()->session()->flash('error', 'Post Comment not found');
+
             return redirect()->back();
         }
     }
+
     public function userCommentEdit($id)
     {
         $comments = PostComment::find($id);
@@ -170,6 +185,7 @@ class HomeController extends Controller
             return view('user.comment.edit')->with('comment', $comments);
         } else {
             request()->session()->flash('error', 'Comment not found');
+
             return redirect()->back();
         }
     }
@@ -177,7 +193,6 @@ class HomeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -193,9 +208,11 @@ class HomeController extends Controller
             } else {
                 request()->session()->flash('error', 'Something went wrong! Please try again!!');
             }
+
             return redirect()->route('user.post-comment.index');
         } else {
             request()->session()->flash('error', 'Comment not found');
+
             return redirect()->back();
         }
     }
@@ -204,11 +221,12 @@ class HomeController extends Controller
     {
         return view('user.layouts.userPasswordChange');
     }
+
     public function changPasswordStore(Request $request)
     {
         $request->validate([
-            'current_password'     => ['required', new MatchOldPassword],
-            'new_password'         => ['required'],
+            'current_password' => ['required', new MatchOldPassword],
+            'new_password' => ['required'],
             'new_confirm_password' => ['same:new_password'],
         ]);
 

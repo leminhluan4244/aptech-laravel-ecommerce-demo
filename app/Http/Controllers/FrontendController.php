@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Banner;
@@ -17,7 +18,6 @@ use Spatie\Newsletter\Facades\Newsletter;
 
 class FrontendController extends Controller
 {
-
     public function index(Request $request)
     {
         return redirect()->route($request->user()->role);
@@ -26,11 +26,12 @@ class FrontendController extends Controller
     public function home()
     {
         $featured = Product::where('status', 'active')->where('is_featured', 1)->orderBy('price', 'DESC')->limit(2)->get();
-        $posts    = Post::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
-        $banners  = Banner::where('status', 'active')->limit(3)->orderBy('id', 'DESC')->get();
+        $posts = Post::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
+        $banners = Banner::where('status', 'active')->limit(3)->orderBy('id', 'DESC')->get();
         $products = Product::where('status', 'active')->orderBy('id', 'DESC')->limit(8)->get();
 
         $category = Category::where('status', 'active')->where('is_parent', 1)->orderBy('title', 'ASC')->get();
+
         return view('frontend.index')
             ->with('featured', $featured)
             ->with('posts', $posts)
@@ -52,6 +53,7 @@ class FrontendController extends Controller
     public function productDetail($slug)
     {
         $product_detail = Product::getProductBySlug($slug);
+
         return view('frontend.pages.product_detail')->with('product_detail', $product_detail);
     }
 
@@ -60,13 +62,14 @@ class FrontendController extends Controller
         $products = Product::query();
 
         if (! empty($_GET['category'])) {
-            $slug    = explode(',', $_GET['category']);
+            $slug = explode(',', $_GET['category']);
             $cat_ids = Category::select('id')->whereIn('slug', $slug)->pluck('id')->toArray();
             $products->whereIn('cat_id', $cat_ids);
         }
         if (! empty($_GET['brand'])) {
-            $slugs     = explode(',', $_GET['brand']);
+            $slugs = explode(',', $_GET['brand']);
             $brand_ids = Brand::select('id')->whereIn('slug', $slugs)->pluck('id')->toArray();
+
             return $brand_ids;
             $products->whereIn('brand_id', $brand_ids);
         }
@@ -99,6 +102,7 @@ class FrontendController extends Controller
 
         return view('frontend.pages.product-grids')->with('products', $products)->with('recent_products', $recent_products);
     }
+
     public function productLists()
     {
         $products = Product::query();
@@ -112,8 +116,9 @@ class FrontendController extends Controller
             // return $products;
         }
         if (! empty($_GET['brand'])) {
-            $slugs     = explode(',', $_GET['brand']);
+            $slugs = explode(',', $_GET['brand']);
             $brand_ids = Brand::select('id')->whereIn('slug', $slugs)->pluck('id')->toArray();
+
             return $brand_ids;
             $products->whereIn('brand_id', $brand_ids);
         }
@@ -146,69 +151,72 @@ class FrontendController extends Controller
 
         return view('frontend.pages.product-lists')->with('products', $products)->with('recent_products', $recent_products);
     }
+
     public function productFilter(Request $request)
     {
         $data = $request->all();
         // return $data;
-        $showURL = "";
+        $showURL = '';
         if (! empty($data['show'])) {
-            $showURL .= '&show=' . $data['show'];
+            $showURL .= '&show='.$data['show'];
         }
 
         $sortByURL = '';
         if (! empty($data['sortBy'])) {
-            $sortByURL .= '&sortBy=' . $data['sortBy'];
+            $sortByURL .= '&sortBy='.$data['sortBy'];
         }
 
-        $catURL = "";
+        $catURL = '';
         if (! empty($data['category'])) {
             foreach ($data['category'] as $category) {
                 if (empty($catURL)) {
-                    $catURL .= '&category=' . $category;
+                    $catURL .= '&category='.$category;
                 } else {
-                    $catURL .= ',' . $category;
+                    $catURL .= ','.$category;
                 }
             }
         }
 
-        $brandURL = "";
+        $brandURL = '';
         if (! empty($data['brand'])) {
             foreach ($data['brand'] as $brand) {
                 if (empty($brandURL)) {
-                    $brandURL .= '&brand=' . $brand;
+                    $brandURL .= '&brand='.$brand;
                 } else {
-                    $brandURL .= ',' . $brand;
+                    $brandURL .= ','.$brand;
                 }
             }
         }
         // return $brandURL;
 
-        $priceRangeURL = "";
+        $priceRangeURL = '';
         if (! empty($data['price_range'])) {
-            $priceRangeURL .= '&price=' . $data['price_range'];
+            $priceRangeURL .= '&price='.$data['price_range'];
         }
         if (request()->is('e-shop.loc/product-grids')) {
-            return redirect()->route('product-grids', $catURL . $brandURL . $priceRangeURL . $showURL . $sortByURL);
+            return redirect()->route('product-grids', $catURL.$brandURL.$priceRangeURL.$showURL.$sortByURL);
         } else {
-            return redirect()->route('product-lists', $catURL . $brandURL . $priceRangeURL . $showURL . $sortByURL);
+            return redirect()->route('product-lists', $catURL.$brandURL.$priceRangeURL.$showURL.$sortByURL);
         }
     }
+
     public function productSearch(Request $request)
     {
         $recent_products = Product::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
-        $products        = Product::orwhere('title', 'like', '%' . $request->search . '%')
-            ->orwhere('slug', 'like', '%' . $request->search . '%')
-            ->orwhere('description', 'like', '%' . $request->search . '%')
-            ->orwhere('summary', 'like', '%' . $request->search . '%')
-            ->orwhere('price', 'like', '%' . $request->search . '%')
+        $products = Product::orwhere('title', 'like', '%'.$request->search.'%')
+            ->orwhere('slug', 'like', '%'.$request->search.'%')
+            ->orwhere('description', 'like', '%'.$request->search.'%')
+            ->orwhere('summary', 'like', '%'.$request->search.'%')
+            ->orwhere('price', 'like', '%'.$request->search.'%')
             ->orderBy('id', 'DESC')
             ->paginate('9');
+
         return view('frontend.pages.product-grids')->with('products', $products)->with('recent_products', $recent_products);
     }
 
     public function productBrand(Request $request)
     {
-        $products        = Brand::getProductByBrand($request->slug);
+        $products = Brand::getProductByBrand($request->slug);
         $recent_products = Product::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
         if (request()->is('e-shop.loc/product-grids')) {
             return view('frontend.pages.product-grids')->with('products', $products->products)->with('recent_products', $recent_products);
@@ -216,6 +224,7 @@ class FrontendController extends Controller
             return view('frontend.pages.product-lists')->with('products', $products->products)->with('recent_products', $recent_products);
         }
     }
+
     public function productCat(Request $request)
     {
         $products = Category::getProductByCat($request->slug);
@@ -228,6 +237,7 @@ class FrontendController extends Controller
             return view('frontend.pages.product-lists')->with('products', $products->products)->with('recent_products', $recent_products);
         }
     }
+
     public function productSubCat(Request $request)
     {
         $products = Category::getProductBySubCat($request->sub_slug);
@@ -249,6 +259,7 @@ class FrontendController extends Controller
             $slug = explode(',', $_GET['category']);
             // dd($slug);
             $cat_ids = PostCategory::select('id')->whereIn('slug', $slug)->pluck('id')->toArray();
+
             return $cat_ids;
             $post->whereIn('post_cat_id', $cat_ids);
             // return $post;
@@ -269,13 +280,15 @@ class FrontendController extends Controller
         }
         // $post=Post::where('status','active')->paginate(8);
         $rcnt_post = Post::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
+
         return view('frontend.pages.blog')->with('posts', $post)->with('recent_posts', $rcnt_post);
     }
 
     public function blogDetail($slug)
     {
-        $post      = Post::getPostBySlug($slug);
+        $post = Post::getPostBySlug($slug);
         $rcnt_post = Post::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
+
         // return $post;
         return view('frontend.pages.blog-detail')->with('post', $post)->with('recent_posts', $rcnt_post);
     }
@@ -283,13 +296,14 @@ class FrontendController extends Controller
     public function blogSearch(Request $request)
     {
         $rcnt_post = Post::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
-        $posts     = Post::orwhere('title', 'like', '%' . $request->search . '%')
-            ->orwhere('quote', 'like', '%' . $request->search . '%')
-            ->orwhere('summary', 'like', '%' . $request->search . '%')
-            ->orwhere('description', 'like', '%' . $request->search . '%')
-            ->orwhere('slug', 'like', '%' . $request->search . '%')
+        $posts = Post::orwhere('title', 'like', '%'.$request->search.'%')
+            ->orwhere('quote', 'like', '%'.$request->search.'%')
+            ->orwhere('summary', 'like', '%'.$request->search.'%')
+            ->orwhere('description', 'like', '%'.$request->search.'%')
+            ->orwhere('slug', 'like', '%'.$request->search.'%')
             ->orderBy('id', 'DESC')
             ->paginate(8);
+
         return view('frontend.pages.blog')->with('posts', $posts)->with('recent_posts', $rcnt_post);
     }
 
@@ -297,36 +311,38 @@ class FrontendController extends Controller
     {
         $data = $request->all();
         // return $data;
-        $catURL = "";
+        $catURL = '';
         if (! empty($data['category'])) {
             foreach ($data['category'] as $category) {
                 if (empty($catURL)) {
-                    $catURL .= '&category=' . $category;
+                    $catURL .= '&category='.$category;
                 } else {
-                    $catURL .= ',' . $category;
+                    $catURL .= ','.$category;
                 }
             }
         }
 
-        $tagURL = "";
+        $tagURL = '';
         if (! empty($data['tag'])) {
             foreach ($data['tag'] as $tag) {
                 if (empty($tagURL)) {
-                    $tagURL .= '&tag=' . $tag;
+                    $tagURL .= '&tag='.$tag;
                 } else {
-                    $tagURL .= ',' . $tag;
+                    $tagURL .= ','.$tag;
                 }
             }
         }
+
         // return $tagURL;
         // return $catURL;
-        return redirect()->route('blog', $catURL . $tagURL);
+        return redirect()->route('blog', $catURL.$tagURL);
     }
 
     public function blogByCategory(Request $request)
     {
-        $post      = PostCategory::getBlogByCategory($request->slug);
+        $post = PostCategory::getBlogByCategory($request->slug);
         $rcnt_post = Post::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
+
         return view('frontend.pages.blog')->with('posts', $post->post)->with('recent_posts', $rcnt_post);
     }
 
@@ -336,6 +352,7 @@ class FrontendController extends Controller
         $post = Post::getBlogByTag($request->slug);
         // return $post;
         $rcnt_post = Post::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
+
         return view('frontend.pages.blog')->with('posts', $post)->with('recent_posts', $rcnt_post);
     }
 
@@ -344,15 +361,18 @@ class FrontendController extends Controller
     {
         return view('frontend.pages.login');
     }
+
     public function loginSubmit(Request $request)
     {
         $data = $request->all();
         if (Auth::attempt(['email' => $data['email'], 'password' => $data['password'], 'status' => 'active'])) {
             Session::put('user', $data['email']);
             request()->session()->flash('success', 'Logged in successfully!');
+
             return redirect()->route('home');
         } else {
             request()->session()->flash('error', 'Invalid email and password pleas try again!');
+
             return redirect()->back();
         }
     }
@@ -362,6 +382,7 @@ class FrontendController extends Controller
         Session::forget('user');
         Auth::logout();
         request()->session()->flash('success', 'Logged out successfully');
+
         return back();
     }
 
@@ -369,11 +390,12 @@ class FrontendController extends Controller
     {
         return view('frontend.pages.register');
     }
+
     public function registerSubmit(Request $request)
     {
         $this->validate($request, [
-            'name'     => 'string|required|min:2',
-            'email'    => 'string|required|unique:users,email',
+            'name' => 'string|required|min:2',
+            'email' => 'string|required|unique:users,email',
             'password' => 'required|min:6|confirmed',
         ]);
         $data = $request->all();
@@ -382,21 +404,25 @@ class FrontendController extends Controller
         Session::put('user', $data['email']);
         if ($check) {
             request()->session()->flash('success', 'Registered successfully');
+
             return redirect()->route('home');
         } else {
             request()->session()->flash('error', 'Please try again!');
+
             return back();
         }
     }
+
     public function create(array $data)
     {
         return User::create([
-            'name'     => $data['name'],
-            'email'    => $data['email'],
+            'name' => $data['name'],
+            'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'status'   => 'active',
+            'status' => 'active',
         ]);
     }
+
     // Reset password
     public function showResetForm()
     {
@@ -409,13 +435,16 @@ class FrontendController extends Controller
             Newsletter::subscribePending($request->email);
             if (Newsletter::lastActionSucceeded()) {
                 request()->session()->flash('success', 'Subscribed! Please check your email');
+
                 return redirect()->route('home');
             } else {
                 Newsletter::getLastError();
+
                 return back()->with('error', 'Something went wrong! please try again');
             }
         } else {
             request()->session()->flash('error', 'Already Subscribed');
+
             return back();
         }
     }

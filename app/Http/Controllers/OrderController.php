@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
@@ -22,6 +23,7 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::orderBy('id', 'DESC')->paginate(10);
+
         return view('backend.order.index')->with('orders', $orders);
     }
 
@@ -38,24 +40,24 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $this->validate($request, [
             'first_name' => 'string|required',
-            'last_name'  => 'string|required',
-            'address1'   => 'string|required',
-            'address2'   => 'string|nullable',
-            'coupon'     => 'nullable|numeric',
-            'phone'      => 'numeric|required',
-            'post_code'  => 'string|nullable',
-            'email'      => 'string|required',
+            'last_name' => 'string|required',
+            'address1' => 'string|required',
+            'address2' => 'string|nullable',
+            'coupon' => 'nullable|numeric',
+            'phone' => 'numeric|required',
+            'post_code' => 'string|nullable',
+            'email' => 'string|required',
         ]);
 
         if (empty(Cart::where('user_id', auth()->user()->id)->where('order_id', null)->first())) {
             request()->session()->flash('error', 'Cart is Empty !');
+
             return back();
         }
         // $cart=Cart::get();
@@ -86,15 +88,15 @@ class OrderController extends Controller
         //         }
         // }
 
-        $order                      = new Order();
-        $order_data                 = $request->all();
-        $order_data['order_number'] = 'ORD-' . strtoupper(Str::random(10));
-        $order_data['user_id']      = $request->user()->id;
-        $order_data['shipping_id']  = $request->shipping;
-        $shipping                   = Shipping::where('id', $order_data['shipping_id'])->pluck('price');
+        $order = new Order;
+        $order_data = $request->all();
+        $order_data['order_number'] = 'ORD-'.strtoupper(Str::random(10));
+        $order_data['user_id'] = $request->user()->id;
+        $order_data['shipping_id'] = $request->shipping;
+        $shipping = Shipping::where('id', $order_data['shipping_id'])->pluck('price');
         // return session('coupon')['value'];
         $order_data['sub_total'] = Helper::totalCartPrice();
-        $order_data['quantity']  = Helper::cartCount();
+        $order_data['quantity'] = Helper::cartCount();
         if (session('coupon')) {
             $order_data['coupon'] = session('coupon')['value'];
         }
@@ -133,16 +135,15 @@ class OrderController extends Controller
         }
         $order->fill($order_data);
         $status = $order->save();
-        if ($order)
-        // dd($order->id);
-        {
+        if ($order) {
+            // dd($order->id);
             $users = User::where('role', 'admin')->first();
         }
 
         $details = [
-            'title'     => 'New Order Received',
+            'title' => 'New Order Received',
             'actionURL' => route('order.show', $order->id),
-            'fas'       => 'fa-file-alt',
+            'fas' => 'fa-file-alt',
         ];
         Notification::send($users, new StatusNotification($details));
         if (request('payment_method') == 'paypal') {
@@ -155,6 +156,7 @@ class OrderController extends Controller
 
         // dd($users);
         request()->session()->flash('success', 'Your product order has been placed. Thank you for shopping with us.');
+
         return redirect()->route('home');
     }
 
@@ -167,6 +169,7 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Order::find($id);
+
         // return $order;
         return view('backend.order.show')->with('order', $order);
     }
@@ -180,13 +183,13 @@ class OrderController extends Controller
     public function edit($id)
     {
         $order = Order::find($id);
+
         return view('backend.order.edit')->with('order', $order);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -212,6 +215,7 @@ class OrderController extends Controller
         } else {
             request()->session()->flash('error', 'Error while updating order');
         }
+
         return redirect()->route('order.index');
     }
 
@@ -231,9 +235,11 @@ class OrderController extends Controller
             } else {
                 request()->session()->flash('error', 'Order can not deleted');
             }
+
             return redirect()->route('order.index');
         } else {
             request()->session()->flash('error', 'Order can not found');
+
             return redirect()->back();
         }
     }
@@ -247,21 +253,26 @@ class OrderController extends Controller
     {
         $order = Order::where('user_id', auth()->user()->id)->where('order_number', $request->order_number)->first();
         if ($order) {
-            if ($order->status == "new") {
+            if ($order->status == 'new') {
                 request()->session()->flash('success', 'Your order has been placed.');
+
                 return redirect()->route('home');
-            } elseif ($order->status == "process") {
+            } elseif ($order->status == 'process') {
                 request()->session()->flash('success', 'Your order is currently processing.');
+
                 return redirect()->route('home');
-            } elseif ($order->status == "delivered") {
+            } elseif ($order->status == 'delivered') {
                 request()->session()->flash('success', 'Your order has been delivered. Thank you for shopping with us.');
+
                 return redirect()->route('home');
             } else {
                 request()->session()->flash('error', 'Sorry, your order has been canceled.');
+
                 return redirect()->route('home');
             }
         } else {
             request()->session()->flash('error', 'Invalid order number. Please try again!');
+
             return back();
         }
     }
@@ -271,11 +282,13 @@ class OrderController extends Controller
     {
         $order = Order::getAllOrder($request->id);
         // return $order;
-        $file_name = $order->order_number . '-' . $order->first_name . '.pdf';
+        $file_name = $order->order_number.'-'.$order->first_name.'.pdf';
         // return $file_name;
         $pdf = PDF::loadview('backend.order.pdf', compact('order'));
+
         return $pdf->download($file_name);
     }
+
     // Income chart
     public function incomeChart(Request $request)
     {
@@ -298,9 +311,10 @@ class OrderController extends Controller
         }
         $data = [];
         for ($i = 1; $i <= 12; $i++) {
-            $monthName        = date('F', mktime(0, 0, 0, $i, 1));
+            $monthName = date('F', mktime(0, 0, 0, $i, 1));
             $data[$monthName] = (! empty($result[$i])) ? number_format((float) ($result[$i]), 2, '.', '') : 0.0;
         }
+
         return $data;
     }
 }
