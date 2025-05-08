@@ -53,7 +53,6 @@
                 {{-- {{$post->tags}} --}}
                 @php
                     $post_tags = explode(',', $post->tags);
-                    // dd($tags);
                 @endphp
                 <div class="form-group">
                     <label for="tags">Tag</label>

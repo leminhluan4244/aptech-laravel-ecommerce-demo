@@ -86,7 +86,6 @@
                             <ul class="nav nav-tabs filter-tope-group" id="myTab" role="tablist">
                                 @php
                                     $categories=DB::table('categories')->where('status','active')->where('is_parent',1)->get();
-                                    // dd($categories);
                                 @endphp
                                 @if($categories)
                                 <button class="btn" style="background:black"data-filter="*">
@@ -213,7 +212,6 @@
                                 <a href="{{route('product-detail',$product->slug)}}">
                                     @php
                                         $photo=explode(',',$product->photo);
-                                    // dd($photo);
                                     @endphp
                                     <img class="default-img" src="{{asset($photo[0])}}" alt="{{asset($photo[0])}}">
                                     <img class="hover-img" src="{{asset($photo[0])}}" alt="{{asset($photo[0])}}">
@@ -275,7 +273,6 @@
                                     <div class="list-image overlay">
                                         @php
                                             $photo=explode(',',$product->photo);
-                                            // dd($photo);
                                         @endphp
                                         <img src="{{asset($photo[0])}}" alt="{{asset($photo[0])}}">
                                         <a href="{{route('add-to-cart',$product->slug)}}" class="buy"><i class="fa fa-shopping-bag"></i></a>
@@ -397,7 +394,6 @@
                                             <div class="quickview-slider-active">
                                                 @php
                                                     $photo=explode(',',$product->photo);
-                                                // dd($photo);
                                                 @endphp
                                                 @foreach($photo as $data)
                                                     <div class="single-slider">
@@ -456,7 +452,6 @@
                                                         <select>
                                                             @php
                                                             $sizes=explode(',',$product->size);
-                                                            // dd($sizes);
                                                             @endphp
                                                             @foreach($sizes as $size)
                                                                 <option>{{$size}}</option>

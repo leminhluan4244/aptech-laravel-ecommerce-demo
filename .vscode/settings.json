@@ -5,5 +5,8 @@
     "php.validate.executablePath": "D:/Soft/xampp/php/php.exe", // Windows
     // "php.validate.executablePath": "/Users/leminhluan4244/Library/Application Support/Herd/config/php/82/",
     "intelephense.diagnostics.undefinedFunctions": true,
-    "intelephense.diagnostics.undefinedMethods": false //Mac OS
+    "intelephense.diagnostics.undefinedMethods": false, //Mac OS
+    "[php]": {
+        "editor.defaultFormatter": "open-southeners.laravel-pint"
+    }
 }

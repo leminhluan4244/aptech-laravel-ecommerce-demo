@@ -91,7 +91,6 @@ class PostTagController extends Controller
     public function update(Request $request, $id)
     {
         $postTag = PostTag::findOrFail($id);
-        // return $request->all();
         $this->validate($request, [
             'title' => 'string|required',
             'status' => 'required|in:active,inactive',

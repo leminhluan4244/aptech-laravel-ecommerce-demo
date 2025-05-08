@@ -48,12 +48,9 @@ class UsersController extends Controller
                 'photo' => 'nullable|string',
             ]
         );
-        // dd($request->all());
         $data = $request->all();
         $data['password'] = Hash::make($request->password);
-        // dd($data);
         $status = User::create($data);
-        // dd($status);
         if ($status) {
             request()->session()->flash('success', 'User added successfully');
         } else {
@@ -106,9 +103,7 @@ class UsersController extends Controller
                 'photo' => 'nullable|string',
             ]
         );
-        // dd($request->all());
         $data = $request->all();
-        // dd($data);
 
         $status = $user->fill($data)->save();
         if ($status) {

@@ -18,14 +18,12 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
-        // dd($request->all());
         if (empty($request->slug)) {
             request()->session()->flash('error', 'Invalid Products');
 
             return back();
         }
         $product = Product::where('slug', $request->slug)->first();
-        // return $product;
         if (empty($product)) {
             request()->session()->flash('error', 'Invalid Products');
 
@@ -33,12 +31,9 @@ class CartController extends Controller
         }
 
         $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id', null)->where('product_id', $product->id)->first();
-        // return $already_cart;
         if ($already_cart) {
-            // dd($already_cart);
             $already_cart->quantity = $already_cart->quantity + 1;
             $already_cart->amount = $product->price + $already_cart->amount;
-            // return $already_cart->quantity;
             if ($already_cart->product->stock < $already_cart->quantity || $already_cart->product->stock <= 0) {
                 return back()->with('error', 'Stock not sufficient!.');
             }
@@ -68,7 +63,6 @@ class CartController extends Controller
             'slug' => 'required',
             'quant' => 'required',
         ]);
-        // dd($request->quant[1]);
 
         $product = Product::where('slug', $request->slug)->first();
         if ($product->stock < $request->quant[1]) {
@@ -82,7 +76,6 @@ class CartController extends Controller
 
         $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id', null)->where('product_id', $product->id)->first();
 
-        // return $already_cart;
 
         if ($already_cart) {
             $already_cart->quantity = $already_cart->quantity + $request->quant[1];
@@ -105,7 +98,6 @@ class CartController extends Controller
             if ($cart->product->stock < $cart->quantity || $cart->product->stock <= 0) {
                 return back()->with('error', 'Stock not sufficient!.');
             }
-            // return $cart;
             $cart->save();
         }
         request()->session()->flash('success', 'Product has been added to cart.');
@@ -129,19 +121,13 @@ class CartController extends Controller
 
     public function cartUpdate(Request $request)
     {
-        // dd($request->all());
         if ($request->quant) {
             $error = [];
             $success = '';
-            // return $request->quant;
             foreach ($request->quant as $k => $quant) {
-                // return $k;
                 $id = $request->qty_id[$k];
-                // return $id;
                 $cart = Cart::find($id);
-                // return $cart;
                 if ($quant > 0 && $cart) {
-                    // return $quant;
 
                     if ($cart->product->stock < $quant) {
                         request()->session()->flash('error', 'Out of stock');
@@ -149,14 +135,12 @@ class CartController extends Controller
                         return back();
                     }
                     $cart->quantity = ($cart->product->stock > $quant) ? $quant : $cart->product->stock;
-                    // return $cart;
 
                     if ($cart->product->stock <= 0) {
                         continue;
                     }
                     $after_price = ($cart->product->price - ($cart->product->price * $cart->product->discount) / 100);
                     $cart->amount = $after_price * $quant;
-                    // return $cart->price;
                     $cart->save();
                     $success = 'Cart updated successfully!';
                 } else {
@@ -171,7 +155,6 @@ class CartController extends Controller
     }
 
     // public function addToCart(Request $request){
-    //     // return $request->all();
     //     if(Auth::check()){
     //         $qty=$request->quantity;
     //         $this->product=$this->product->find($request->pro_id);
@@ -184,7 +167,6 @@ class CartController extends Controller
     //         // $session_id=session('cart')['session_id'];
     //         // if(empty($session_id)){
     //         //     $session_id=Str::random(30);
-    //         //     // dd($session_id);
     //         //     session()->put('session_id',$session_id);
     //         // }
     //         $current_item=array(
@@ -244,7 +226,6 @@ class CartController extends Controller
 
     // public function removeCart(Request $request){
     //     $index=$request->index;
-    //     // return $index;
     //     $cart=session('cart');
     //     unset($cart[$index]);
     //     session()->put('cart',$cart);

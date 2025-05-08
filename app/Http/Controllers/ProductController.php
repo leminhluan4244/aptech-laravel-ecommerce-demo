@@ -19,7 +19,6 @@ class ProductController extends Controller
     {
         $products = Product::getAllProduct();
 
-        // return $products;
         return view('backend.product.index')->with('products', $products);
     }
 
@@ -33,7 +32,6 @@ class ProductController extends Controller
         $brand = Brand::get();
         $category = Category::where('is_parent', 1)->get();
 
-        // return $category;
         return view('backend.product.create')->with('categories', $category)->with('brands', $brand);
     }
 
@@ -75,8 +73,6 @@ class ProductController extends Controller
         } else {
             $data['size'] = '';
         }
-        // return $size;
-        // return $data;
         $status = Product::create($data);
         if ($status) {
             request()->session()->flash('success', 'Product added');
@@ -112,7 +108,6 @@ class ProductController extends Controller
         $category = Category::where('is_parent', 1)->get();
         $items = Product::where('id', $id)->get();
 
-        // return $items;
         return view('backend.product.edit')->with('product', $product)
             ->with('brands', $brand)
             ->with('categories', $category)->with('items', $items);
@@ -152,7 +147,6 @@ class ProductController extends Controller
         } else {
             $data['size'] = '';
         }
-        // return $data;
         $status = $product->fill($data)->save();
         if ($status) {
             request()->session()->flash('success', 'Product updated');

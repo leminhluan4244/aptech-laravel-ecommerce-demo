@@ -46,7 +46,6 @@ class ProductReviewController extends Controller
         $data['product_id'] = $product_info->id;
         $data['user_id'] = $request->user()->id;
         $data['status'] = 'active';
-        // dd($data);
         $status = ProductReview::create($data);
 
         $user = User::where('role', 'admin')->get();
@@ -86,7 +85,6 @@ class ProductReviewController extends Controller
     {
         $review = ProductReview::find($id);
 
-        // return $review;
         return view('backend.review.edit')->with('review', $review);
     }
 
@@ -102,12 +100,10 @@ class ProductReviewController extends Controller
         if ($review) {
             // $product_info=Product::getProductBySlug($request->slug);
             //  return $product_info;
-            // return $request->all();
             $data = $request->all();
             $status = $review->fill($data)->update();
 
             // $user=User::where('role','admin')->get();
-            // return $user;
             // $details=[
             //     'title'=>'Update Product Rating!',
             //     'actionURL'=>route('product-detail',$product_info->id),

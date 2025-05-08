@@ -17,7 +17,6 @@ class CategoryController extends Controller
     {
         $category = Category::getAllCategory();
 
-        // return $category;
         return view('backend.category.index')->with('categories', $category);
     }
 
@@ -56,7 +55,6 @@ class CategoryController extends Controller
         }
         $data['slug'] = $slug;
         $data['is_parent'] = $request->input('is_parent', 0);
-        // return $data;
         $status = Category::create($data);
         if ($status) {
             request()->session()->flash('success', 'Category added successfully');
@@ -112,7 +110,6 @@ class CategoryController extends Controller
         ]);
         $data = $request->all();
         $data['is_parent'] = $request->input('is_parent', 0);
-        // return $data;
         $status = $category->fill($data)->save();
         if ($status) {
             request()->session()->flash('success', 'Category updated successfully');
@@ -133,7 +130,6 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         $child_cat_id = Category::where('parent_id', $id)->pluck('id');
-        // return $child_cat_id;
         $status = $category->delete();
 
         if ($status) {
@@ -152,7 +148,6 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($request->id);
         $child_cat = Category::getChildByParentID($request->id);
-        // return $child_cat;
         if (count($child_cat) <= 0) {
             return response()->json(['status' => false, 'msg' => '', 'data' => null]);
         } else {

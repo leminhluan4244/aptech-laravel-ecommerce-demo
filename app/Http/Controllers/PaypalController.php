@@ -15,7 +15,6 @@ class PaypalController extends Controller
 
         $data = [];
 
-        // return $cart;
         $data['items'] = array_map(function ($item) {
             $name = Product::where('id', $item['product_id'])->pluck('title');
 
@@ -43,7 +42,6 @@ class PaypalController extends Controller
         }
         Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => session()->get('id')]);
 
-        // return session()->get('id');
         $provider = new ExpressCheckout;
 
         $response = $provider->setExpressCheckout($data);
@@ -70,7 +68,6 @@ class PaypalController extends Controller
     {
         $provider = new ExpressCheckout;
         $response = $provider->getExpressCheckoutDetails($request->token);
-        // return $response;
 
         if (in_array(strtoupper($response['ACK']), ['SUCCESS', 'SUCCESSWITHWARNING'])) {
             request()->session()->flash('success', 'You have successfully paid through Paypal! Thank You');

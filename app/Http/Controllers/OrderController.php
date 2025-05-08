@@ -61,7 +61,6 @@ class OrderController extends Controller
             return back();
         }
         // $cart=Cart::get();
-        // // return $cart;
         // $cart_index='ORD-'.strtoupper(uniqid());
         // $sub_total=0;
         // foreach($cart as $cart_item){
@@ -94,7 +93,6 @@ class OrderController extends Controller
         $order_data['user_id'] = $request->user()->id;
         $order_data['shipping_id'] = $request->shipping;
         $shipping = Shipping::where('id', $order_data['shipping_id'])->pluck('price');
-        // return session('coupon')['value'];
         $order_data['sub_total'] = Helper::totalCartPrice();
         $order_data['quantity'] = Helper::cartCount();
         if (session('coupon')) {
@@ -113,7 +111,6 @@ class OrderController extends Controller
                 $order_data['total_amount'] = Helper::totalCartPrice();
             }
         }
-        // return $order_data['total_amount'];
         // $order_data['status']="new";
         // if(request('payment_method')=='paypal'){
         //     $order_data['payment_method']='paypal';
@@ -136,7 +133,6 @@ class OrderController extends Controller
         $order->fill($order_data);
         $status = $order->save();
         if ($order) {
-            // dd($order->id);
             $users = User::where('role', 'admin')->first();
         }
 
@@ -154,7 +150,6 @@ class OrderController extends Controller
         }
         Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order->id]);
 
-        // dd($users);
         request()->session()->flash('success', 'Your product order has been placed. Thank you for shopping with us.');
 
         return redirect()->route('home');
@@ -170,7 +165,6 @@ class OrderController extends Controller
     {
         $order = Order::find($id);
 
-        // return $order;
         return view('backend.order.show')->with('order', $order);
     }
 
@@ -200,11 +194,9 @@ class OrderController extends Controller
             'status' => 'required|in:new,process,delivered,cancel',
         ]);
         $data = $request->all();
-        // return $request->status;
         if ($request->status == 'delivered') {
             foreach ($order->cart as $cart) {
                 $product = $cart->product;
-                // return $product;
                 $product->stock -= $cart->quantity;
                 $product->save();
             }
@@ -281,9 +273,7 @@ class OrderController extends Controller
     public function pdf(Request $request)
     {
         $order = Order::getAllOrder($request->id);
-        // return $order;
         $file_name = $order->order_number.'-'.$order->first_name.'.pdf';
-        // return $file_name;
         $pdf = PDF::loadview('backend.order.pdf', compact('order'));
 
         return $pdf->download($file_name);
@@ -293,19 +283,15 @@ class OrderController extends Controller
     public function incomeChart(Request $request)
     {
         $year = \Carbon\Carbon::now()->year;
-        // dd($year);
         $items = Order::with(['cart_info'])->whereYear('created_at', $year)->where('status', 'delivered')->get()
             ->groupBy(function ($d) {
                 return \Carbon\Carbon::parse($d->created_at)->format('m');
             });
-        // dd($items);
         $result = [];
         foreach ($items as $month => $item_collections) {
             foreach ($item_collections as $item) {
                 $amount = $item->cart_info->sum('amount');
-                // dd($amount);
                 $m = intval($month);
-                // return $m;
                 isset($result[$m]) ? $result[$m] += $amount : $result[$m] = $amount;
             }
         }

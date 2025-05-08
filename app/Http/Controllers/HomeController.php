@@ -36,7 +36,6 @@ class HomeController extends Controller
     {
         $profile = Auth()->user();
 
-        // return $profile;
         return view('user.users.profile')->with('profile', $profile);
     }
 
@@ -89,7 +88,6 @@ class HomeController extends Controller
     {
         $order = Order::find($id);
 
-        // return $order;
         return view('user.order.show')->with('order', $order);
     }
 
@@ -105,7 +103,6 @@ class HomeController extends Controller
     {
         $review = ProductReview::find($id);
 
-        // return $review;
         return view('user.review.edit')->with('review', $review);
     }
 
@@ -201,7 +198,6 @@ class HomeController extends Controller
         $comment = PostComment::find($id);
         if ($comment) {
             $data = $request->all();
-            // return $data;
             $status = $comment->fill($data)->update();
             if ($status) {
                 request()->session()->flash('success', 'Comment updated');

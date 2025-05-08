@@ -55,9 +55,7 @@
                         ->select('title')
                         ->where('id', $product->child_cat_id)
                         ->get();
-                    // dd($sub_cat_info);
                 @endphp
-                {{-- {{$product->child_cat_id}} --}}
                 <div class="form-group {{ $product->child_cat_id ? '' : 'd-none' }}" id="child_cat_div">
                     <label for="child_cat_id">Sub Category</label>
                     <select name="child_cat_id" id="child_cat_id" class="form-control">
@@ -90,7 +88,6 @@
                         @foreach ($items as $item)
                             @php
                                 $data = explode(',', $item->size);
-                                // dd($data);
                             @endphp
                             <option value="S" @if (in_array('S', $data)) selected @endif>Small</option>
                             <option value="M" @if (in_array('M', $data)) selected @endif>Medium</option>

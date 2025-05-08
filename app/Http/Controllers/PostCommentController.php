@@ -41,12 +41,10 @@ class PostCommentController extends Controller
     public function store(Request $request)
     {
         $post_info = Post::getPostBySlug($request->slug);
-        // return $post_info;
         $data = $request->all();
         $data['user_id'] = $request->user()->id;
         // $data['post_id']=$post_info->id;
         $data['status'] = 'active';
-        // return $data;
         $status = PostComment::create($data);
         $user = User::where('role', 'admin')->get();
         $details = [
@@ -104,7 +102,6 @@ class PostCommentController extends Controller
         $comment = PostComment::find($id);
         if ($comment) {
             $data = $request->all();
-            // return $data;
             $status = $comment->fill($data)->update();
             if ($status) {
                 request()->session()->flash('success', 'Comment updated');

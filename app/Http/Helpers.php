@@ -30,7 +30,6 @@ class Helper
     public static function getHeaderCategory()
     {
         $category = new Category;
-        // dd($category);
         $menu = $category->getAllParentWithChild();
 
         if ($menu) {
@@ -137,7 +136,6 @@ class Helper
                 $user_id = auth()->user()->id;
             }
 
-            // return Cart::where('user_id',$user_id)->where('order_id',null)->sum('amount');
             return Cart::where('user_id', $user_id)->where('order_id', null)->sum('price');
         } else {
             return 0;
@@ -179,7 +177,6 @@ class Helper
                 $user_id = auth()->user()->id;
             }
 
-            // return Wishlist::where('user_id',$user_id)->where('cart_id',null)->sum('amount');
             return Wishlist::where('user_id', $user_id)->where('cart_id', null)->sum('price');
         } else {
             return 0;
@@ -190,7 +187,6 @@ class Helper
     public static function grandPrice($id, $user_id)
     {
         $order = Order::find($id);
-        dd($id);
         if ($order) {
             $shipping_price = (float) $order->shipping->price;
             $order_price = self::orderPrice($id, $user_id);
@@ -205,7 +201,6 @@ class Helper
     public static function earningPerMonth()
     {
         $month_data = Order::where('status', 'delivered')->get();
-        // return $month_data;
         $price = 0;
         foreach ($month_data as $data) {
             $price = $data->cart_info->sum('price');

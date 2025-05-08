@@ -20,7 +20,6 @@ class PostController extends Controller
     {
         $posts = Post::getAllPost();
 
-        // return $posts;
         return view('backend.post.index')->with('posts', $posts);
     }
 
@@ -72,7 +71,6 @@ class PostController extends Controller
         } else {
             $data['tags'] = '';
         }
-        // return $data;
 
         $status = Post::create($data);
         if ($status) {
@@ -134,13 +132,11 @@ class PostController extends Controller
 
         $data = $request->all();
         $tags = $request->input('tags');
-        // return $tags;
         if ($tags) {
             $data['tags'] = implode(',', $tags);
         } else {
             $data['tags'] = '';
         }
-        // return $data;
 
         $status = $post->fill($data)->save();
         if ($status) {

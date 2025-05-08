@@ -84,7 +84,6 @@ class FrontendController extends Controller
 
         if (! empty($_GET['price'])) {
             $price = explode('-', $_GET['price']);
-            // return $price;
             // if(isset($price[0]) && is_numeric($price[0])) $price[0]=floor(Helper::base_amount($price[0]));
             // if(isset($price[1]) && is_numeric($price[1])) $price[1]=ceil(Helper::base_amount($price[1]));
 
@@ -109,11 +108,8 @@ class FrontendController extends Controller
 
         if (! empty($_GET['category'])) {
             $slug = explode(',', $_GET['category']);
-            // dd($slug);
             $cat_ids = Category::select('id')->whereIn('slug', $slug)->pluck('id')->toArray();
-            // dd($cat_ids);
             $products->whereIn('cat_id', $cat_ids)->paginate;
-            // return $products;
         }
         if (! empty($_GET['brand'])) {
             $slugs = explode(',', $_GET['brand']);
@@ -133,7 +129,6 @@ class FrontendController extends Controller
 
         if (! empty($_GET['price'])) {
             $price = explode('-', $_GET['price']);
-            // return $price;
             // if(isset($price[0]) && is_numeric($price[0])) $price[0]=floor(Helper::base_amount($price[0]));
             // if(isset($price[1]) && is_numeric($price[1])) $price[1]=ceil(Helper::base_amount($price[1]));
 
@@ -155,7 +150,6 @@ class FrontendController extends Controller
     public function productFilter(Request $request)
     {
         $data = $request->all();
-        // return $data;
         $showURL = '';
         if (! empty($data['show'])) {
             $showURL .= '&show='.$data['show'];
@@ -187,7 +181,6 @@ class FrontendController extends Controller
                 }
             }
         }
-        // return $brandURL;
 
         $priceRangeURL = '';
         if (! empty($data['price_range'])) {
@@ -228,7 +221,6 @@ class FrontendController extends Controller
     public function productCat(Request $request)
     {
         $products = Category::getProductByCat($request->slug);
-        // return $request->slug;
         $recent_products = Product::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
 
         if (request()->is('e-shop.loc/product-grids')) {
@@ -241,7 +233,6 @@ class FrontendController extends Controller
     public function productSubCat(Request $request)
     {
         $products = Category::getProductBySubCat($request->sub_slug);
-        // return $products;
         $recent_products = Product::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
 
         if (request()->is('e-shop.loc/product-grids')) {
@@ -257,20 +248,15 @@ class FrontendController extends Controller
 
         if (! empty($_GET['category'])) {
             $slug = explode(',', $_GET['category']);
-            // dd($slug);
             $cat_ids = PostCategory::select('id')->whereIn('slug', $slug)->pluck('id')->toArray();
 
             return $cat_ids;
             $post->whereIn('post_cat_id', $cat_ids);
-            // return $post;
         }
         if (! empty($_GET['tag'])) {
             $slug = explode(',', $_GET['tag']);
-            // dd($slug);
             $tag_ids = PostTag::select('id')->whereIn('slug', $slug)->pluck('id')->toArray();
-            // return $tag_ids;
             $post->where('post_tag_id', $tag_ids);
-            // return $post;
         }
 
         if (! empty($_GET['show'])) {
@@ -289,7 +275,6 @@ class FrontendController extends Controller
         $post = Post::getPostBySlug($slug);
         $rcnt_post = Post::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
 
-        // return $post;
         return view('frontend.pages.blog-detail')->with('post', $post)->with('recent_posts', $rcnt_post);
     }
 
@@ -310,7 +295,6 @@ class FrontendController extends Controller
     public function blogFilter(Request $request)
     {
         $data = $request->all();
-        // return $data;
         $catURL = '';
         if (! empty($data['category'])) {
             foreach ($data['category'] as $category) {
@@ -333,8 +317,6 @@ class FrontendController extends Controller
             }
         }
 
-        // return $tagURL;
-        // return $catURL;
         return redirect()->route('blog', $catURL.$tagURL);
     }
 
@@ -348,9 +330,7 @@ class FrontendController extends Controller
 
     public function blogByTag(Request $request)
     {
-        // dd($request->slug);
         $post = Post::getBlogByTag($request->slug);
-        // return $post;
         $rcnt_post = Post::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
 
         return view('frontend.pages.blog')->with('posts', $post)->with('recent_posts', $rcnt_post);
@@ -399,7 +379,6 @@ class FrontendController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
         $data = $request->all();
-        // dd($data);
         $check = $this->create($data);
         Session::put('user', $data['email']);
         if ($check) {

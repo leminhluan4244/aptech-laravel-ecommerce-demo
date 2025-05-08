@@ -42,7 +42,6 @@
                                         ->select('title')
                                         ->where('id', $product->child_cat_id)
                                         ->get();
-                                    // dd($sub_cat_info);
                                     $brands = DB::table('brands')
                                         ->select('title')
                                         ->where('id', $product->brand_id)
@@ -73,7 +72,6 @@
                                         @if ($product->photo)
                                             @php
                                                 $photo = explode(',', $product->photo);
-                                                // dd($photo);
                                             @endphp
                                             <img src="{{ asset($photo[0]) }}" class="img-fluid zoom" style="max-width:80px"
                                                 alt="{{ asset($product->photo) }}">

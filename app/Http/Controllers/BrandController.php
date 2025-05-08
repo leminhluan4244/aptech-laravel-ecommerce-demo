@@ -47,7 +47,6 @@ class BrandController extends Controller
             $slug = $slug.'-'.date('ymdis').'-'.rand(0, 999);
         }
         $data['slug'] = $slug;
-        // return $data;
         $status = Brand::create($data);
         if ($status) {
             request()->session()->flash('success', 'Brand created successfully');

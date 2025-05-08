@@ -53,7 +53,6 @@ class MessageController extends Controller
         ]);
 
         $message = Message::create($request->all());
-        // return $message;
         $data = [];
         $data['url'] = route('message.show', $message->id);
         $data['date'] = $message->created_at->format('F d, Y h:i A');
@@ -63,7 +62,6 @@ class MessageController extends Controller
         $data['message'] = $message->message;
         $data['subject'] = $message->subject;
         $data['photo'] = Auth()->user()->photo;
-        // return $data;
         event(new MessageSent($data));
         exit();
     }

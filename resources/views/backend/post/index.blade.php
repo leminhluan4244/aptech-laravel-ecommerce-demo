@@ -37,8 +37,6 @@
                                         ->select('name')
                                         ->where('id', $post->added_by)
                                         ->get();
-                                    // dd($sub_cat_info);
-                                    // dd($author_info);
                                 @endphp
                                 <tr>
                                     <td>{{ $post->id }}</td>

@@ -134,7 +134,6 @@ class CouponController extends Controller
     public function couponStore(Request $request)
     {
         $coupon = Coupon::where('code', $request->code)->first();
-        // dd($coupon);
         if (! $coupon) {
             request()->session()->flash('error', 'Invalid coupon code, Please try again');
 
@@ -142,7 +141,6 @@ class CouponController extends Controller
         }
         if ($coupon) {
             $total_price = Cart::where('user_id', auth()->user()->id)->where('order_id', null)->sum('price');
-            // dd($total_price);
             session()->put('coupon', [
                 'id' => $coupon->id,
                 'code' => $coupon->code,

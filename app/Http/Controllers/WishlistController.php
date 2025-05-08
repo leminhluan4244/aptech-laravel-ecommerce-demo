@@ -17,14 +17,12 @@ class WishlistController extends Controller
 
     public function wishlist(Request $request)
     {
-        // dd($request->all());
         if (empty($request->slug)) {
             request()->session()->flash('error', 'Invalid Products');
 
             return back();
         }
         $product = Product::where('slug', $request->slug)->first();
-        // return $product;
         if (empty($product)) {
             request()->session()->flash('error', 'Invalid Products');
 
@@ -32,7 +30,6 @@ class WishlistController extends Controller
         }
 
         $already_wishlist = Wishlist::where('user_id', auth()->user()->id)->where('cart_id', null)->where('product_id', $product->id)->first();
-        // return $already_wishlist;
         if ($already_wishlist) {
             request()->session()->flash('error', 'You already placed in wishlist');
 

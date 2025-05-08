@@ -78,7 +78,6 @@
 											</div> --}}
                                         @php
                                             $max = DB::table('products')->max('price');
-                                            // dd($max);
                                         @endphp
                                         <div id="slider-range" data-min="0" data-max="{{ $max }}"></div>
                                         <div class="product_filter">
@@ -296,7 +295,6 @@
                                         <div class="quickview-slider-active">
                                             @php
                                                 $photo = explode(',', $product->photo);
-                                                // dd($photo);
                                             @endphp
                                             @foreach ($photo as $data)
                                                 <div class="single-slider">
@@ -362,7 +360,6 @@
                                                 <ul>
                                                     @php
                                                         $sizes = explode(',', $product->size);
-                                                        // dd($sizes);
                                                     @endphp
                                                     @foreach ($sizes as $size)
                                                         <li><a href="#" class="one">{{ $size }}</a></li>
