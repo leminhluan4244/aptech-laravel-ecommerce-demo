@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Post;
@@ -40,20 +39,19 @@ class PostCommentController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request->all();
         $post_info = Post::getPostBySlug($request->slug);
         // return $post_info;
-        $data = $request->all();
+        $data            = $request->all();
         $data['user_id'] = $request->user()->id;
         // $data['post_id']=$post_info->id;
         $data['status'] = 'active';
         // return $data;
-        $status = PostComment::create($data);
-        $user = User::where('role', 'admin')->get();
+        $status  = PostComment::create($data);
+        $user    = User::where('role', 'admin')->get();
         $details = [
-            'title' => "New Comment created",
+            'title'     => "New Comment created",
             'actionURL' => route('blog.detail', $post_info->slug),
-            'fas' => 'fas fa-comment',
+            'fas'       => 'fas fa-comment',
         ];
         Notification::send($user, new StatusNotification($details));
         if ($status) {

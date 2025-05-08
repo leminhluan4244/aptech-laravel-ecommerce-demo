@@ -1,13 +1,12 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Order;
-use App\Models\ProductReview;
 use App\Models\PostComment;
+use App\Models\ProductReview;
 use App\Models\User;
 use App\Rules\MatchOldPassword;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
@@ -28,7 +27,6 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
-
     public function index()
     {
         return view('user.index');
@@ -43,9 +41,8 @@ class HomeController extends Controller
 
     public function profileUpdate(Request $request, $id)
     {
-        // return $request->all();
-        $user = User::findOrFail($id);
-        $data = $request->all();
+        $user   = User::findOrFail($id);
+        $data   = $request->all();
         $status = $user->fill($data)->save();
         if ($status) {
             request()->session()->flash('success', 'Successfully updated your profile');
@@ -113,7 +110,7 @@ class HomeController extends Controller
     {
         $review = ProductReview::find($id);
         if ($review) {
-            $data = $request->all();
+            $data   = $request->all();
             $status = $review->fill($data)->update();
             if ($status) {
                 request()->session()->flash('success', 'Review updated');
@@ -210,8 +207,8 @@ class HomeController extends Controller
     public function changPasswordStore(Request $request)
     {
         $request->validate([
-            'current_password' => ['required', new MatchOldPassword],
-            'new_password' => ['required'],
+            'current_password'     => ['required', new MatchOldPassword],
+            'new_password'         => ['required'],
             'new_confirm_password' => ['same:new_password'],
         ]);
 

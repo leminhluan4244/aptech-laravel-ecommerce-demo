@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
@@ -46,15 +45,14 @@ class OrderController extends Controller
     {
         $this->validate($request, [
             'first_name' => 'string|required',
-            'last_name' => 'string|required',
-            'address1' => 'string|required',
-            'address2' => 'string|nullable',
-            'coupon' => 'nullable|numeric',
-            'phone' => 'numeric|required',
-            'post_code' => 'string|nullable',
-            'email' => 'string|required',
+            'last_name'  => 'string|required',
+            'address1'   => 'string|required',
+            'address2'   => 'string|nullable',
+            'coupon'     => 'nullable|numeric',
+            'phone'      => 'numeric|required',
+            'post_code'  => 'string|nullable',
+            'email'      => 'string|required',
         ]);
-        // return $request->all();
 
         if (empty(Cart::where('user_id', auth()->user()->id)->where('order_id', null)->first())) {
             request()->session()->flash('error', 'Cart is Empty !');
@@ -88,15 +86,15 @@ class OrderController extends Controller
         //         }
         // }
 
-        $order = new Order();
-        $order_data = $request->all();
+        $order                      = new Order();
+        $order_data                 = $request->all();
         $order_data['order_number'] = 'ORD-' . strtoupper(Str::random(10));
-        $order_data['user_id'] = $request->user()->id;
-        $order_data['shipping_id'] = $request->shipping;
-        $shipping = Shipping::where('id', $order_data['shipping_id'])->pluck('price');
+        $order_data['user_id']      = $request->user()->id;
+        $order_data['shipping_id']  = $request->shipping;
+        $shipping                   = Shipping::where('id', $order_data['shipping_id'])->pluck('price');
         // return session('coupon')['value'];
         $order_data['sub_total'] = Helper::totalCartPrice();
-        $order_data['quantity'] = Helper::cartCount();
+        $order_data['quantity']  = Helper::cartCount();
         if (session('coupon')) {
             $order_data['coupon'] = session('coupon')['value'];
         }
@@ -142,9 +140,9 @@ class OrderController extends Controller
         }
 
         $details = [
-            'title' => 'New Order Received',
+            'title'     => 'New Order Received',
             'actionURL' => route('order.show', $order->id),
-            'fas' => 'fa-file-alt',
+            'fas'       => 'fa-file-alt',
         ];
         Notification::send($users, new StatusNotification($details));
         if (request('payment_method') == 'paypal') {
@@ -247,7 +245,6 @@ class OrderController extends Controller
 
     public function productTrackOrder(Request $request)
     {
-        // return $request->all();
         $order = Order::where('user_id', auth()->user()->id)->where('order_number', $request->order_number)->first();
         if ($order) {
             if ($order->status == "new") {
@@ -301,8 +298,8 @@ class OrderController extends Controller
         }
         $data = [];
         for ($i = 1; $i <= 12; $i++) {
-            $monthName = date('F', mktime(0, 0, 0, $i, 1));
-            $data[$monthName] = (!empty($result[$i])) ? number_format((float) ($result[$i]), 2, '.', '') : 0.0;
+            $monthName        = date('F', mktime(0, 0, 0, $i, 1));
+            $data[$monthName] = (! empty($result[$i])) ? number_format((float) ($result[$i]), 2, '.', '') : 0.0;
         }
         return $data;
     }

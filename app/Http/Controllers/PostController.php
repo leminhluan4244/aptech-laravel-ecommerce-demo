@@ -1,13 +1,12 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use App\Models\Post;
 use App\Models\PostCategory;
 use App\Models\PostTag;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -31,8 +30,8 @@ class PostController extends Controller
     public function create()
     {
         $categories = PostCategory::get();
-        $tags = PostTag::get();
-        $users = User::get();
+        $tags       = PostTag::get();
+        $users      = User::get();
         return view('backend.post.create')->with('users', $users)->with('categories', $categories)->with('tags', $tags);
     }
 
@@ -44,22 +43,21 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request->all();
         $this->validate($request, [
-            'title' => 'string|required',
-            'quote' => 'string|nullable',
-            'summary' => 'string|required',
+            'title'       => 'string|required',
+            'quote'       => 'string|nullable',
+            'summary'     => 'string|required',
             'description' => 'string|nullable',
-            'photo' => 'string|nullable',
-            'tags' => 'nullable',
-            'added_by' => 'nullable',
+            'photo'       => 'string|nullable',
+            'tags'        => 'nullable',
+            'added_by'    => 'nullable',
             'post_cat_id' => 'required',
-            'status' => 'required|in:active,inactive'
+            'status'      => 'required|in:active,inactive',
         ]);
 
         $data = $request->all();
 
-        $slug = Str::slug($request->title);
+        $slug  = Str::slug($request->title);
         $count = Post::where('slug', $slug)->count();
         if ($count > 0) {
             $slug = $slug . '-' . date('ymdis') . '-' . rand(0, 999);
@@ -102,10 +100,10 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::findOrFail($id);
+        $post       = Post::findOrFail($id);
         $categories = PostCategory::get();
-        $tags = PostTag::get();
-        $users = User::get();
+        $tags       = PostTag::get();
+        $users      = User::get();
         return view('backend.post.edit')->with('categories', $categories)->with('users', $users)->with('tags', $tags)->with('post', $post);
     }
 
@@ -119,17 +117,16 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         $post = Post::findOrFail($id);
-        // return $request->all();
         $this->validate($request, [
-            'title' => 'string|required',
-            'quote' => 'string|nullable',
-            'summary' => 'string|required',
+            'title'       => 'string|required',
+            'quote'       => 'string|nullable',
+            'summary'     => 'string|required',
             'description' => 'string|nullable',
-            'photo' => 'string|nullable',
-            'tags' => 'nullable',
-            'added_by' => 'nullable',
+            'photo'       => 'string|nullable',
+            'tags'        => 'nullable',
+            'added_by'    => 'nullable',
             'post_cat_id' => 'required',
-            'status' => 'required|in:active,inactive'
+            'status'      => 'required|in:active,inactive',
         ]);
 
         $data = $request->all();

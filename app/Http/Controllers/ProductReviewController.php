@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Product;
@@ -44,19 +43,18 @@ class ProductReviewController extends Controller
         ]);
         $product_info = Product::getProductBySlug($request->slug);
         //  return $product_info;
-        // return $request->all();
-        $data = $request->all();
+        $data               = $request->all();
         $data['product_id'] = $product_info->id;
-        $data['user_id'] = $request->user()->id;
-        $data['status'] = 'active';
+        $data['user_id']    = $request->user()->id;
+        $data['status']     = 'active';
         // dd($data);
         $status = ProductReview::create($data);
 
-        $user = User::where('role', 'admin')->get();
+        $user    = User::where('role', 'admin')->get();
         $details = [
-            'title' => 'New Product Rating!',
+            'title'     => 'New Product Rating!',
             'actionURL' => route('product-detail', $product_info->slug),
-            'fas' => 'fa-star',
+            'fas'       => 'fa-star',
         ];
         Notification::send($user, new StatusNotification($details));
         if ($status) {
@@ -105,7 +103,7 @@ class ProductReviewController extends Controller
             // $product_info=Product::getProductBySlug($request->slug);
             //  return $product_info;
             // return $request->all();
-            $data = $request->all();
+            $data   = $request->all();
             $status = $review->fill($data)->update();
 
             // $user=User::where('role','admin')->get();

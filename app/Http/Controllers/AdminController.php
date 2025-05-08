@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Settings;
@@ -24,22 +23,19 @@ class AdminController extends Controller
         foreach ($data as $key => $value) {
             $array[++$key] = [$value->day_name, $value->count];
         }
-        //  return $data;
         return view('backend.index')->with('users', json_encode($array));
     }
 
     public function profile()
     {
         $profile = Auth::user();
-        // return $profile;
         return view('backend.users.profile')->with('profile', $profile);
     }
 
     public function profileUpdate(Request $request, $id)
     {
-        // return $request->all();
-        $user = User::findOrFail($id);
-        $data = $request->all();
+        $user   = User::findOrFail($id);
+        $data   = $request->all();
         $status = $user->fill($data)->save();
         if ($status) {
             request()->session()->flash('success', 'Successfully updated your profile');
@@ -57,21 +53,18 @@ class AdminController extends Controller
 
     public function settingsUpdate(Request $request)
     {
-        // return $request->all();
         $this->validate($request, [
-            'short_des' => 'required|string',
+            'short_des'   => 'required|string',
             'description' => 'required|string',
-            'photo' => 'required',
-            'logo' => 'required',
-            'address' => 'required|string',
-            'email' => 'required|email',
-            'phone' => 'required|string',
+            'photo'       => 'required',
+            'logo'        => 'required',
+            'address'     => 'required|string',
+            'email'       => 'required|email',
+            'phone'       => 'required|string',
         ]);
-        $data = $request->all();
-        // return $data;
+        $data     = $request->all();
         $settings = Settings::first();
-        // return $settings;
-        $status = $settings->fill($data)->save();
+        $status   = $settings->fill($data)->save();
         if ($status) {
             request()->session()->flash('success', 'Setting successfully updated');
         } else {
@@ -87,8 +80,8 @@ class AdminController extends Controller
     public function changPasswordStore(Request $request)
     {
         $request->validate([
-            'current_password' => ['required', new MatchOldPassword],
-            'new_password' => ['required'],
+            'current_password'     => ['required', new MatchOldPassword],
+            'new_password'         => ['required'],
             'new_confirm_password' => ['same:new_password'],
         ]);
 
@@ -110,13 +103,6 @@ class AdminController extends Controller
         foreach ($data as $key => $value) {
             $array[++$key] = [$value->day_name, $value->count];
         }
-        //  return $data;
         return view('backend.index')->with('course', json_encode($array));
     }
-
-    // public function activity(){
-    //     return Activity::all();
-    //     $activity= Activity::all();
-    //     return view('backend.layouts.activity')->with('activities',$activity);
-    // }
 }

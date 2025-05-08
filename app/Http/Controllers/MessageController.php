@@ -1,11 +1,10 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use App\Models\Message;
 use App\Events\MessageSent;
+use App\Models\Message;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
@@ -44,25 +43,24 @@ class MessageController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'string|required|min:2',
-            'email' => 'email|required',
+            'name'    => 'string|required|min:2',
+            'email'   => 'email|required',
             'message' => 'required|min:20|max:200',
             'subject' => 'string|required',
-            'phone' => 'numeric|required'
+            'phone'   => 'numeric|required',
         ]);
-        // return $request->all();
 
         $message = Message::create($request->all());
         // return $message;
-        $data = array();
-        $data['url'] = route('message.show', $message->id);
-        $data['date'] = $message->created_at->format('F d, Y h:i A');
-        $data['name'] = $message->name;
-        $data['email'] = $message->email;
-        $data['phone'] = $message->phone;
+        $data            = [];
+        $data['url']     = route('message.show', $message->id);
+        $data['date']    = $message->created_at->format('F d, Y h:i A');
+        $data['name']    = $message->name;
+        $data['email']   = $message->email;
+        $data['phone']   = $message->phone;
         $data['message'] = $message->message;
         $data['subject'] = $message->subject;
-        $data['photo'] = Auth()->user()->photo;
+        $data['photo']   = Auth()->user()->photo;
         // return $data;
         event(new MessageSent($data));
         exit();
@@ -118,7 +116,7 @@ class MessageController extends Controller
     public function destroy($id)
     {
         $message = Message::find($id);
-        $status = $message->delete();
+        $status  = $message->delete();
         if ($status) {
             request()->session()->flash('success', 'Deleted message successfully');
         } else {

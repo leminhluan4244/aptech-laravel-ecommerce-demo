@@ -282,7 +282,6 @@ class FrontendController extends Controller
 
     public function blogSearch(Request $request)
     {
-        // return $request->all();
         $rcnt_post = Post::where('status', 'active')->orderBy('id', 'DESC')->limit(3)->get();
         $posts     = Post::orwhere('title', 'like', '%' . $request->search . '%')
             ->orwhere('quote', 'like', '%' . $request->search . '%')
@@ -372,7 +371,6 @@ class FrontendController extends Controller
     }
     public function registerSubmit(Request $request)
     {
-        // return $request->all();
         $this->validate($request, [
             'name'     => 'string|required|min:2',
             'email'    => 'string|required|unique:users,email',

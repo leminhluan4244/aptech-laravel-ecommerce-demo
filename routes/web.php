@@ -41,7 +41,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes(['register' => false]);
 
-Route::get('user/login', [FrontendController::class, 'login'])->name('login.form');
+Route::get('user/login', [FrontendController::class, 'login'])->name('login.form'); #laravel 12
 Route::post('user/login', [FrontendController::class, 'loginSubmit'])->name('login.submit');
 Route::get('user/logout', [FrontendController::class, 'logout'])->name('user.logout');
 
@@ -117,55 +117,63 @@ Route::get('cancel', [PayPalController::class, 'cancel'])->name('payment.cancel'
 Route::get('payment/success', [PayPalController::class, 'success'])->name('payment.success');
 
 // Backend section start
-Route::middleware([Authenticate::class, AdminMiddleware::class])->prefix('admin')->group(function () {
-// Route::group(['prefix'=>'/admin'], function(){
-    Route::get('/', [AdminController::class, 'index'])->name('admin');
-    Route::get('/file-manager', function () {
-        return view('backend.layouts.file-manager');
-    })->name('file-manager');
-    // user route
-    Route::resource('users', UsersController::class);
-    // Banner
-    Route::resource('banner', BannerController::class);
-    // Brand
-    Route::resource('brand', BrandController::class);
-    // Profile
-    Route::get('/profile', [AdminController::class, 'profile'])->name('admin-profile');
-    Route::post('/profile/{id}', [AdminController::class, 'profileUpdate'])->name('profile-update');
-    // Category
-    Route::resource('/category', CategoryController::class);
-    // Product
-    Route::resource('/product', ProductController::class);
-    // Ajax for sub category
-    Route::post('/category/{id}/child', [CategoryController::class, 'getChildByParent']);
-    // POST category
-    Route::resource('/post-category', PostCategoryController::class);
-    // Post tag
-    Route::resource('/post-tag', PostTagController::class);
-    // Post
-    Route::resource('/post', PostController::class);
-    // Message
-    Route::resource('/message', MessageController::class);
-    Route::get('/message/five', [MessageController::class, 'messageFive'])->name('messages.five');
+Route::middleware([Authenticate::class, AdminMiddleware::class])
+    ->prefix('admin')
+    ->group(function () {
+        // Dashboard
+        Route::get('/', [AdminController::class, 'index'])->name('admin');
 
-    // Order
-    Route::resource('/order', OrderController::class);
-    // Shipping
-    Route::resource('/shipping', ShippingController::class);
-    // Coupon
-    Route::resource('/coupon', CouponController::class);
-    // Settings
-    Route::get('settings', [AdminController::class, 'settings'])->name('settings');
-    Route::post('setting/update', [AdminController::class, 'settingsUpdate'])->name('settings.update');
+        // Media Manager
+        Route::get('/file-manager', function () {
+            return view('backend.layouts.file-manager');
+        })->name('file-manager');
 
-    // Notification
-    Route::get('/notification/{id}', [NotificationController::class, 'show'])->name('admin.notification');
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('all.notification');
-    Route::delete('/notification/{id}', [NotificationController::class, 'delete'])->name('notification.delete');
-    // Password Change
-    Route::get('change-password', [AdminController::class, 'changePassword'])->name('admin.change.password.form');
-    Route::post('change-password', [AdminController::class, 'changPasswordStore'])->name('admin.change.password.submit');
-});
+        // Banner
+        Route::resource('banner', BannerController::class);
+
+        // User
+        Route::resource('users', UsersController::class);
+        // user route
+        Route::resource('users', UsersController::class);
+        // Brand
+        Route::resource('brand', BrandController::class);
+        // Profile
+        Route::get('/profile', [AdminController::class, 'profile'])->name('admin-profile');
+        Route::post('/profile/{id}', [AdminController::class, 'profileUpdate'])->name('profile-update');
+        // Category
+        Route::resource('/category', CategoryController::class);
+        // Product
+        Route::resource('/product', ProductController::class);
+        // Ajax for sub category
+        Route::post('/category/{id}/child', [CategoryController::class, 'getChildByParent']);
+        // POST category
+        Route::resource('/post-category', PostCategoryController::class);
+        // Post tag
+        Route::resource('/post-tag', PostTagController::class);
+        // Post
+        Route::resource('/post', PostController::class);
+        // Message
+        Route::resource('/message', MessageController::class);
+        Route::get('/message/five', [MessageController::class, 'messageFive'])->name('messages.five');
+
+        // Order
+        Route::resource('/order', OrderController::class);
+        // Shipping
+        Route::resource('/shipping', ShippingController::class);
+        // Coupon
+        Route::resource('/coupon', CouponController::class);
+        // Settings
+        Route::get('settings', [AdminController::class, 'settings'])->name('settings');
+        Route::post('setting/update', [AdminController::class, 'settingsUpdate'])->name('settings.update');
+
+        // Notification
+        Route::get('/notification/{id}', [NotificationController::class, 'show'])->name('admin.notification');
+        Route::get('/notifications', [NotificationController::class, 'index'])->name('all.notification');
+        Route::delete('/notification/{id}', [NotificationController::class, 'delete'])->name('notification.delete');
+        // Password Change
+        Route::get('change-password', [AdminController::class, 'changePassword'])->name('admin.change.password.form');
+        Route::post('change-password', [AdminController::class, 'changPasswordStore'])->name('admin.change.password.submit');
+    });
 
 // User section start
 Route::middleware(UserMiddleware::class)->prefix('user')->group(function () {
