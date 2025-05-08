@@ -19,6 +19,7 @@ Bạn có thể làm các điều này hoặc chạy file `install.sh` để ch�
 ```shell
 sh install.sh
 ```
+| Dùng quyền admin trên window hoặc bổ sung `sudo` trên Mac
 
 **Bước 2: Tạo cơ sở dữ liệu mẫu**
 
@@ -34,6 +35,7 @@ Nếu muốn bạn có thể chạy tự động file `database.sh` bằng cách
 ```shell
 sh database.sh
 ```
+| Dùng quyền admin trên window hoặc bổ sung `sudo` trên Mac
 
 Trong quá trình chạy có thể của sổ lệnh sẽ hỏi mật khẩu, bạn hãy dùng mật khẩu mysql account, tránh nhầm với mật khẩu máy tính.
 
@@ -106,6 +108,7 @@ Trong phần này bạn chỉ cần chạy lệnh:
 ```shell
 sh laravel-filemanager.sh
 ```
+| Dùng quyền admin trên window hoặc bổ sung `sudo` trên Mac
 
 Sau khi cài đặt xong bạn thử vào một màn hình bất kỳ có tính năng chọn hình ảnh để upload. Ví dụ: `.../public/admin/banner/creates`
 
