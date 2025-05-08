@@ -102,8 +102,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
     <script>
-        $('#lfm').filemanager('image');
-        $('#lfm1').filemanager('image');
+        var route_prefix = "{{ asset('laravel-filemanager') }}";
+        $('#lfm').filemanager('image', {
+            prefix: route_prefix
+        });
+        $('#lfm1').filemanager('image', {
+            prefix: route_prefix
+        });
         $(document).ready(function() {
             $('#summary').summernote({
                 placeholder: "Write short description.....",
